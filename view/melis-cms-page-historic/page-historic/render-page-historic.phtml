@@ -1,0 +1,17 @@
+<?php
+	$id = '';
+	if (!empty($this->zoneconfig['conf']['id']))
+		$id = ' id="' . $this->idPage . '_' . $this->zoneconfig['conf']['id'] . '"';
+	$data_melisKey = $this->melisKey;
+?>
+
+<div<?= $id; ?> data-melisKey='<?= $data_melisKey; ?>' class="meliscms_center_tabs tab-pane widget-parent melisToolContainer">
+
+	
+	<?php 
+	foreach ($this->zoneconfig['interface'] as $keyConfig => $menuConfig)
+	{
+	    echo $this->$keyConfig;
+	}  
+    ?>
+</div>

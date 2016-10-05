@@ -1,0 +1,35 @@
+
+html{
+	margin: auto;
+	width: 1270px;
+}
+
+#header, #leftmenu, #content, #footer{
+	border: 1px solid black;
+	padding: 10px;
+}
+
+#leftmenu{
+	float: left;	
+	height: 500px;
+	width: 200px;
+}
+
+#content{
+	float: right;	
+	height: 500px;
+	width: 1000px;
+}
+
+#footer{
+	clear: both;
+}
+
+iframe{
+	border: 0;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
