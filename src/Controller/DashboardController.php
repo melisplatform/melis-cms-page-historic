@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Melis Technology (http://www.melistechnology.com)
  *
- * @copyright Copyright (c) 2015 Melis Technology (http://www.melistechnology.com)
- * 
+ * @copyright Copyright (c) 2016 Melis Technology (http://www.melistechnology.com)
+ *
  */
 
 namespace MelisCmsPageHistoric\Controller;
@@ -14,11 +15,16 @@ use Zend\Session\Container;
 use MelisCms\Service\MelisCmsRightsService;
 
 /**
- * Page Historic Plugin
+ * Dashboard controller for MelisCmsPageHistoric
+ * 
+ * Used to render dashboard components in MelisPlatform Back Office
+ *
  */
 class DashboardController extends AbstractActionController
 {
-    
+    /**
+     * Adds page's recent activity on the dashboard
+     */
 	public function recentActivityPagesAction()
 	{
 		$melisKey = $this->params()->fromRoute('melisKey', '');

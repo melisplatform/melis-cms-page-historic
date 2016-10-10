@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Melis Technology (http://www.melistechnology.com)
  *
- * @copyright Copyright (c) 2015 Melis Technology (http://www.melistechnology.com)
- * 
+ * @copyright Copyright (c) 2016 Melis Technology (http://www.melistechnology.com)
+ *
  */
 
 namespace MelisCmsPageHistoric\Controller;
@@ -16,11 +17,11 @@ use Zend\Session\Container;
 use Zend\Json\Json;
 
 /**
- * Page Historic Plugin
+ * Page Historic Controller
+ * Adds the historic tabulation on the page's edition
  */
 class PageHistoricController extends AbstractActionController
-{
-    
+{ 
     const PLUGIN_INDEX = 'meliscmspagehistoric';
     const TOOL_KEY = 'tool_meliscmspagehistoric';
     
@@ -152,14 +153,9 @@ class PageHistoricController extends AbstractActionController
             ));
         
             // store fetched Object Data into array so we can apply any string modifications
-//             $histDatasUsers = array();
             foreach($getData as $key => $values)
             {
                 $tableData[$key] = (array) $values;
-//                 foreach(ArrayUtils::iteratorToArray($melisUserTable->getEntryById($values->hist_user_id)) as $users)
-//                 {
-//                     $histDatasUsers[] = $users;
-//                 }
             }
 
             for($ctr = 0; $ctr < count($tableData); $ctr++)
@@ -223,16 +219,13 @@ class PageHistoricController extends AbstractActionController
     		return;
     	
     	// Update from the different save actions done
-
     	if (!empty($container['action-page-tmp']))
     	{
             if (!empty($container['action-page-tmp']['datas']))
                 $datas = $container['action-page-tmp']['datas'];
     	}
-        
     	
     	$description = '';
-
     	switch($pageAction)
     	{
     	    case 'Save':
@@ -244,16 +237,17 @@ class PageHistoricController extends AbstractActionController
     	        {
     	            $description = 'tr_melispagehistoric_description_text_save';
     	        }
-	        break;
+	            break;
     	    case 'Publish':
     	        $description = 'tr_melispagehistoric_description_text_publish';
-	        break;
+	            break;
     	    case 'Unpublish':
     	        $description = 'tr_melispagehistoric_description_text_unpublished';
-	        break;
+	            break;
     	}
 
-    	if($idPage) {
+    	if($idPage) 
+    	{
     	    $userId = (int) null;
     	    $userAuthDatas =  $melisCoreAuth->getStorage()->read();
     	    if($userAuthDatas)
@@ -288,24 +282,22 @@ class PageHistoricController extends AbstractActionController
         
     	$melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
     	
-    	/*----From getPageHistoricDataAction()----*/	//added this line of code to add this action to melis_hist_page_historic
-        	$melisCoreAuth = $this->getServiceLocator()->get('MelisCoreAuth');
-    
-        	$userId = (int) null;
-            $userAuthDatas =  $melisCoreAuth->getStorage()->read();
-        	if($userAuthDatas)
-        	   $userId = $userAuthDatas->usr_id;
-        	    	     
-            $histDatas = array(
-                'hist_page_id' => $idPage,
-        	    'hist_action'  => 'Delete',
-                'hist_date'     => date('Y-m-d H:i:s'),
-        	    'hist_user_id' => $userId,
-        	    'hist_description' => 'tr_melispagehistoric_action_text_Delete' 
-            );
-            $melisPageHistoricTable->save($histDatas);
-        /*-----------------------------------------------*/
-        //$melisPageHistoricTable->deleteById($idPage);
+
+    	$melisCoreAuth = $this->getServiceLocator()->get('MelisCoreAuth');
+
+    	$userId = (int) null;
+        $userAuthDatas =  $melisCoreAuth->getStorage()->read();
+    	if($userAuthDatas)
+    	   $userId = $userAuthDatas->usr_id;
+    	    	     
+        $histDatas = array(
+            'hist_page_id' => $idPage,
+    	    'hist_action'  => 'Delete',
+            'hist_date'     => date('Y-m-d H:i:s'),
+    	    'hist_user_id' => $userId,
+    	    'hist_description' => 'tr_melispagehistoric_action_text_Delete' 
+        );
+        $melisPageHistoricTable->save($histDatas);
     	
         $this->getEventManager()->trigger('meliscmspagehistoric_historic_delete_end', $this, $responseData);
     }

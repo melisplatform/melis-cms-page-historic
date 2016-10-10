@@ -3,7 +3,7 @@
 /**
  * Melis Technology (http://www.melistechnology.com)
  *
- * @copyright Copyright (c) 2015 Melis Technology (http://www.melistechnology.com)
+ * @copyright Copyright (c) 2016 Melis Technology (http://www.melistechnology.com)
  *
  */
 
@@ -33,7 +33,7 @@ class MelisPageHistoricTable extends MelisGenericTable
 	/**
 	 * Get Page Historic Data for MelisCms
 	 * @param array $options
-	 * @param String $fixedCriteria
+	 * @param string $fixedCriteria
 	 */
 	public function getPageHistoricData(array $options, $fixedCriteria = null)
 	{
@@ -118,7 +118,6 @@ class MelisPageHistoricTable extends MelisGenericTable
 	
 	public function getHistoryByPageId($pageId)
 	{
-        
         return $this->getEntryById($pageId);
 	}
 	

@@ -3,7 +3,7 @@
 /**
  * Melis Technology (http://www.melistechnology.com)
  *
- * @copyright Copyright (c) 2015 Melis Technology (http://www.melistechnology.com)
+ * @copyright Copyright (c) 2016 Melis Technology (http://www.melistechnology.com)
  *
  */
 
@@ -13,6 +13,12 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 
 use MelisCore\Listener\MelisCoreGeneralListener;
+
+/**
+ * This listener activates when a page is deleted so that an entry
+ * is added in the page's historic
+ *
+ */
 class MelisPageHistoricDeletePageListener extends MelisCoreGeneralListener implements ListenerAggregateInterface
 {
     
