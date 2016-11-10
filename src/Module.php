@@ -32,13 +32,27 @@ class Module
 
         $this->createTranslations($e);
         
-        $eventManager->getSharedManager()->attach(__NAMESPACE__,
-    			MvcEvent::EVENT_DISPATCH, function($e) { 
-    				$e->getTarget()->layout('layout/layoutMelisPageHistoric');
-			});
-        
-        $eventManager->attach(new MelisPageHistoricDeletePageListener());
-        $eventManager->attach(new MelisPageHistoricPageEventListener());
+        $sm = $e->getApplication()->getServiceManager();
+        $routeMatch = $sm->get('router')->match($sm->get('request'));
+        if (!empty($routeMatch))
+        {
+            $routeName = $routeMatch->getMatchedRouteName();
+            $module = explode('/', $routeName);
+             
+            if (!empty($module[0]))
+            {
+                if ($module[0] == 'melis-backoffice')
+                {
+                    $eventManager->getSharedManager()->attach(__NAMESPACE__,
+                			MvcEvent::EVENT_DISPATCH, function($e) { 
+                				$e->getTarget()->layout('layout/layoutMelisPageHistoric');
+            			});
+                    
+                    $eventManager->attach(new MelisPageHistoricDeletePageListener());
+                    $eventManager->attach(new MelisPageHistoricPageEventListener());
+                }
+            }
+        }
     }
     
     public function getConfig()
