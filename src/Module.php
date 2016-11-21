@@ -103,28 +103,5 @@ class Module
     	return $table;
     }
     
-    public function getViewHelperConfig()
-	{
-		return array(
-			'factories' => array(
-    							)
-    				);
-    }
-    
-    public function getServiceConfig()
-    {
-    	return array(
-    			'factories' => array(
-					'MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable' =>  function($sm) {
-						return new MelisPageHistoricTable($sm->get('MelisPageHistoricGateway'));
-					},
-    			    'MelisPageHistoricGateway' => function($sm) {
-    			         $hydratingResultSet = new HydratingResultSet(new ObjectProperty(), new MelisPageHistoric());
-    			         return new TableGateway('melis_hist_page_historic', $sm->get('Zend\Db\Adapter\Adapter'), null, $hydratingResultSet);
-    			    },
-    			),
-    	);
-    }
-    
     
 }

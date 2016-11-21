@@ -51,6 +51,9 @@ return array(
         'aliases' => array(
             'MelisPagehistoricTable' => 'MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable',
         ),
+        'factories' => array(
+            'MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable' => 'MelisCmsPageHistoric\Model\Tables\Factory\MelisPageHistoricTableFactory',
+        ),
     ),
     'controllers' => array(
         'invokables' => array(
