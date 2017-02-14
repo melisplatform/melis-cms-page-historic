@@ -53,16 +53,12 @@ class PageHistoricController extends AbstractActionController
         $melisKey = $this->params()->fromRoute('melisKey', '');
         $melisTool = $this->getServiceLocator()->get('MelisCoreTool');
         $melisTool->setMelisToolKey(self::PLUGIN_INDEX, self::TOOL_KEY);
+        $columns = $melisTool->getColumns();
         
         $idPage = $this->params()->fromRoute('idPage', $this->params()->fromQuery('idPage', ''));
         
         $container = new Container('meliscore');
         $locale = $container['melis-lang-locale'];
-        
-        $columns = $melisTool->getColumns();
-        // pre-add Action Columns, in this case, since this tool doesn't need actions, 
-        // we just leave it empty, so it would not cause any errors when initializing the datatable
-        $columns['actions'] = array('text' => '');
         
         $view = new ViewModel();
         $view->melisKey = $melisKey;
@@ -70,7 +66,6 @@ class PageHistoricController extends AbstractActionController
         $view->getToolDataTableConfig = $melisTool->getDataTableConfiguration('#tableHistoricPageId'.$idPage, true);
         $view->idPage = $idPage;
         $view->tableId = 'tableHistoricPageId'.$idPage;
-        
         
         return $view;
     }

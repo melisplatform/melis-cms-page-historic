@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="Bootstrap.php" cbackupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="false"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="MelisCmsPageHistoricTest">
+            <directory suffix=".php">./MelisCmsPageHistoricTest</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

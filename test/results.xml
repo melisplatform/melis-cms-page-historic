@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:/Program Files (x86)/Zend/ZendServer/data/apps/http/www.melis-commerce.local/80/_docroot_/public/../vendor/melisplatform/melis-cms-page-historic/test/MelisCmsPageHistoricTest" tests="2" assertions="2" failures="1" errors="0" time="0.005517">
+    <testsuite name="MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest" file="C:\Program Files (x86)\Zend\ZendServer\data\apps\http\www.melis-commerce.local\80\_docroot_\vendor\melisplatform\melis-cms-page-historic\test\MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest.php" tests="2" assertions="2" failures="1" errors="0" time="0.005517">
+      <testcase name="testBasicMelisCmsPageHistoricTestSuccess" class="MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest" file="C:\Program Files (x86)\Zend\ZendServer\data\apps\http\www.melis-commerce.local\80\_docroot_\vendor\melisplatform\melis-cms-page-historic\test\MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest.php" line="29" assertions="1" time="0.002856"/>
+      <testcase name="testBasicMelisCmsPageHistoricTestError" class="MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest" file="C:\Program Files (x86)\Zend\ZendServer\data\apps\http\www.melis-commerce.local\80\_docroot_\vendor\melisplatform\melis-cms-page-historic\test\MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest.php" line="34" assertions="1" time="0.002661">
+        <failure type="PHPUnit_Framework_ExpectationFailedException">MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest::testBasicMelisCmsPageHistoricTestError
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'supposed-to'
++'display-an-error'
+
+C:\Program Files (x86)\Zend\ZendServer\data\apps\http\www.melis-commerce.local\80\_docroot_\vendor\melisplatform\melis-cms-page-historic\test\MelisCmsPageHistoricTest\Controller\MelisCmsPageHistoricControllerTest.php:36
+</failure>
+      </testcase>
+    </testsuite>
+  </testsuite>
+</testsuites>

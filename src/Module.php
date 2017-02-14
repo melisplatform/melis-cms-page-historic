@@ -92,8 +92,23 @@ class Module
     	$container = new Container('meliscore');
     	$locale = $container['melis-lang-locale'];
     	 
-    	$translator->addTranslationFile('phparray', __DIR__ . '/../language/' . $locale . '.interface.php');
-    	$translator->addTranslationFile('phparray', __DIR__ . '/../language/' . $locale . '.forms.php');
+
+    	if (!empty($locale))
+    	{
+    	    
+    	    // Inteface translations
+    	    $interfaceTransPath = 'module/MelisModuleConfig/languages/MelisCmsPageHistoric/' . $locale . '.interface.php';
+    	    $default = __DIR__ . '/../language/en_EN.interface.php';
+    	    $transPath = (file_exists($interfaceTransPath))? $interfaceTransPath : $default;
+    	    $translator->addTranslationFile('phparray', $transPath);
+    	    
+    	    // Forms translations
+    	    $formsTransPath = 'module/MelisModuleConfig/languages/MelisCmsPageHistoric/' . $locale . '.forms.php';
+    	    $default = __DIR__ . '/../language/en_EN.forms.php';
+    	    $transPath = (file_exists($formsTransPath))? $formsTransPath : $default;
+    	    $translator->addTranslationFile('phparray', $transPath);
+    	    
+    	}
     }
     
     public function setTable($tableName)
