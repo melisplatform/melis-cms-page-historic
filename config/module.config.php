@@ -74,11 +74,4 @@ return array(
             'ViewJsonStrategy',
         ),
     ),
-    'asset_manager' => array(
-        'resolver_configs' => array(
-            'aliases' => array(
-                'MelisCmsPageHistoric/' => __DIR__ . '/../public/',
-            ),
-        ),
-    ),
 );

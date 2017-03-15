@@ -134,15 +134,15 @@ class MelisPageHistoricTable extends MelisGenericTable
 	    return $resultSet;
 	}
 
-	public function getPagesHistoricForDashboard($max = 5)
-	{
-	    $select = $this->tableGateway->getSql()->select();
-	  	$select->columns(array(new \Zend\Db\Sql\Expression('DISTINCT(hist_page_id) as pageId')));
-	    $select->order('hist_id DESC');
-		$select->limit($max);
-	    $resultSet = $this->tableGateway->selectWith($select);
-	
-	    return $resultSet;
+    public function getPagesHistoricForDashboard($max = 5)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array(new \Zend\Db\Sql\Expression('DISTINCT(hist_page_id) as pageId'), 'hist_id'));
+        $select->order('hist_id DESC');
+        $select->limit($max);
+        $resultSet = $this->tableGateway->selectWith($select);
 
-	}
+        return $resultSet;
+
+    }
 }
