@@ -9,22 +9,29 @@
 
 namespace MelisCmsPageHistoricTest\Controller;
 
-use PHPUnit_Framework_TestCase;
-use MelisCmsProspectsTest\ServiceManagerGrabber;
+use MelisCore\ServiceManagerGrabber;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 class MelisCmsPageHistoricControllerTest extends AbstractHttpControllerTestCase
 {
     protected $traceError = false;
+    protected $sm;
+    protected $method = 'save';
 
     public function setUp()
     {
-        $this->setApplicationConfig(
-            include '../../../config/test.application.config.php'
-        );
-
-        parent::setUp();
-
+        $this->sm  = new ServiceManagerGrabber();
     }
+
+
+
+    public function getPayload($method)
+    {
+        return $this->sm->getPhpUnitTool()->getPayload('MelisCmsPageHistoric', $method);
+    }
+
+    /**
+     * START ADDING YOUR TESTS HERE
+     */
 
     public function testBasicMelisCmsPageHistoricTestSuccess()
     {
@@ -36,6 +43,7 @@ class MelisCmsPageHistoricControllerTest extends AbstractHttpControllerTestCase
         $this->assertEquals("supposed-to", "display-an-error");
     }
 
-}
 
+
+}
 
