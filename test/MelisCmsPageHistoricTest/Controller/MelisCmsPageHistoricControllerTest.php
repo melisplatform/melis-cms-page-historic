@@ -38,12 +38,5 @@ class MelisCmsPageHistoricControllerTest extends AbstractHttpControllerTestCase
         $this->assertEquals("equalvalue", "equalvalue");
     }
 
-    public function testBasicMelisCmsPageHistoricTestError()
-    {
-        $this->assertEquals("supposed-to", "display-an-error");
-    }
-
-
-
 }
 
