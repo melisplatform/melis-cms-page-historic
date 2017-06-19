@@ -6,7 +6,11 @@
 	$data_melisKey = $this->melisKey;
 	
 ?>
-<div class="tab-pane" <?= $id; ?>>
+<?php
+if($this->isCmsActive){
+
+?>
+<div class="tab-pane" <?= $id; ?> data-hasCms="true">
 	<ul class="list">
 		<?php 
 			foreach ($this->pages as $page)
@@ -33,3 +37,12 @@
 		?>				
 	</ul>
 </div>
+
+<?php
+}
+else {
+
+?>
+<div class="tab-pane" <?= $id; ?> data-hasCms="false">
+</div>
+<?php } ?>

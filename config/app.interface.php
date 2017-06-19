@@ -19,7 +19,7 @@ return array(
 								'module' => 'MelisCmsPageHistoric',
 								'controller' => 'Dashboard',
 								'action' => 'recentActivityPages',
-								'jscallback' => '',
+								'jscallback' => 'initDashboardPageHistoric();',
 								'jsdatas' => array()
 							),
 						),

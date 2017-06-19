@@ -25,9 +25,17 @@ window.initHistoric = function(data, tblSettings) {
 	// pass what page ID to be used when displaying page historic
 	data.pageId = pageId;
 }
+window.initDashboardPageHistoric = function() {
+	setTimeout(function() {
+		var nextLi = $("a[href='#id_melispagehistoric_dashboard_recent_activity_pages']").parents("li").nextAll("li");
+		$("a[href='#id_melispagehistoric_dashboard_recent_activity_pages']").parents("li").remove();
+		nextLi.addClass("active");
 
-
-
+		var nextTab = $("div.widget-body > div.tab-content > div#id_melispagehistoric_dashboard_recent_activity_pages").next()
+		$("div.widget-body > div.tab-content > div#id_melispagehistoric_dashboard_recent_activity_pages").remove();
+		nextTab.addClass("active");
+	}, 100);
+}
 
 // OPEN HISTORIC FROM DASHBOARD WIDGET
 function openHitoricFromDashboard(){
@@ -37,6 +45,15 @@ function openHitoricFromDashboard(){
 
 //open historic event
 $body.on("click", '.melis-openrecenthistoric', openHitoricFromDashboard );
+
+
+$(function() {
+    if($("div[data-hasCms='false']").length === 1) {
+        if(typeof window.initDashboardPageHistoric !== 'undefined') {
+            initDashboardPageHistoric();
+        }
+    }
+});
 
 
 
