@@ -27,13 +27,16 @@ window.initHistoric = function(data, tblSettings) {
 }
 window.initDashboardPageHistoric = function() {
 	setTimeout(function() {
-		var nextLi = $("a[href='#id_melispagehistoric_dashboard_recent_activity_pages']").parents("li").nextAll("li");
-		$("a[href='#id_melispagehistoric_dashboard_recent_activity_pages']").parents("li").remove();
-		nextLi.addClass("active");
+		var historic = $("#id_melispagehistoric_dashboard_recent_activity_pages");
+		if(historic.length < 1) {
+            var nextLi = $("a[href='#id_melispagehistoric_dashboard_recent_activity_pages']").parents("li").nextAll("li");
+            $("a[href='#id_melispagehistoric_dashboard_recent_activity_pages']").parents("li").remove();
+            nextLi.addClass("active");
 
-		var nextTab = $("div.widget-body > div.tab-content > div#id_melispagehistoric_dashboard_recent_activity_pages").next()
-		$("div.widget-body > div.tab-content > div#id_melispagehistoric_dashboard_recent_activity_pages").remove();
-		nextTab.addClass("active");
+            var nextTab = $("div.widget-body > div.tab-content > div#id_melispagehistoric_dashboard_recent_activity_pages").next()
+            $("div.widget-body > div.tab-content > div#id_melispagehistoric_dashboard_recent_activity_pages").remove();
+            nextTab.addClass("active");
+		}
 	}, 100);
 }
 
