@@ -159,6 +159,19 @@ class DashboardController extends AbstractActionController
 		return $view;
 	}
 
+    private function isCmsInActive()
+    {
+        $melisCms  = 'MelisCms';
+        $moduleSvc = $this->getServiceLocator()->get('ModulesService');
+        $modules   = $moduleSvc->getInActiveModules();
+
+        if(in_array($melisCms, $modules)) {
+            return true;
+        }
+
+        return false;
+    }
+
 	private function isCmsActive()
     {
         $melisCms  = 'MelisCms';

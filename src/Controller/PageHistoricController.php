@@ -182,7 +182,26 @@ class PageHistoricController extends AbstractActionController
             'data' => $tableData,
         ));
     }
-    
+    /**
+     * Returns latest page historic
+     *
+     * return array
+     */
+    public  function getLatestPageHistoric()
+    {
+        $responseData = $this->params()->fromRoute('datas', $this->params()->fromQuery('datas', ''));
+        $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
+
+        $histDatas = array(
+            'hist_page_id' => $idPage,
+            'hist_action'  => 'Delete',
+            'hist_date'     => date('Y-m-d H:i:s'),
+            'hist_user_id' => $userId,
+            'hist_description' => 'tr_melispagehistoric_action_text_Delete'
+        );
+
+        return $histDatas;
+    }
     
     /**
      * Saves the action taken from MelisCMS Page Actions 
@@ -296,6 +315,8 @@ class PageHistoricController extends AbstractActionController
     	
         $this->getEventManager()->trigger('meliscmspagehistoric_historic_delete_end', $this, $responseData);
     }
+
+
     
 
 }
