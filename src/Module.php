@@ -21,6 +21,11 @@ use MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable;
 
 use MelisCmsPageHistoric\Listener\MelisPageHistoricDeletePageListener;
 use MelisCmsPageHistoric\Listener\MelisPageHistoricPageEventListener;
+/**
+ * Class Module
+ * @package MelisCmsPageHistoric
+ * @require melis-core|melis-cms
+ */
 
 class Module
 {
