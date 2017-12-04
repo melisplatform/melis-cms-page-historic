@@ -27,7 +27,7 @@
     "melisplatform/melis-engine": "dev-develop",
     "melisplatform/melis-front": "dev-develop",
     "melisplatform/melis-cms": "dev-develop",
-    "justinrainbow/json-schema": "dev-develop"
+    "justinrainbow/json-schema": "5.2.1"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.8"
