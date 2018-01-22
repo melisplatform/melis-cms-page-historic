@@ -34,10 +34,10 @@
     "ext-json": "*",
     "ext-pdo_mysql": "*",
     "ext-mcrypt": "*",
-    "melisplatform/melis-core": "dev-develop",
-    "melisplatform/melis-engine": "dev-develop",
-    "melisplatform/melis-front": "dev-develop",
-    "melisplatform/melis-cms": "dev-develop",
+    "melisplatform/melis-core": "~2.2.7",
+    "melisplatform/melis-engine": "~2.2.1",
+    "melisplatform/melis-front": "~2.2.1",
+    "melisplatform/melis-cms": "~2.2.1",
     "justinrainbow/json-schema": "5.2.1"
   },
   "require-dev": {
