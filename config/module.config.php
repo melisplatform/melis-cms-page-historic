@@ -59,7 +59,6 @@ return array(
         'invokables' => array(
             'MelisCmsPageHistoric\Controller\PageHistoric' => 'MelisCmsPageHistoric\Controller\PageHistoricController',
             'MelisCmsPageHistoric\Controller\Dashboard' => 'MelisCmsPageHistoric\Controller\DashboardController',
-            'MelisCmsPageHistoric\Controller\MelisSetup' => 'MelisCmsPageHistoric\Controller\MelisSetupController',
     	),
     ),
     'view_manager' => array(
