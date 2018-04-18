@@ -59,6 +59,20 @@ return array(
 		        'css' => array(
 		              
 		        ),
+                /**
+                 * the "build" configuration compiles all assets into one file to make
+                 * lesser requests
+                 */
+                'build' => [
+                    // lists of assets that will be loaded in the layout
+                    'css' => [
+
+                    ],
+                    'js' => [
+                        '/MelisCmsPageHistoric/build/js/bundle.js',
+                    ]
+                ]
+
 		    ),
 			'datas' => array(
 			),
