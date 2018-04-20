@@ -13,7 +13,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Session\Container;
-// use Zend\Stdlib\ArrayUtils;
 use Zend\Json\Json;
 
 /**
@@ -124,10 +123,7 @@ class PageHistoricController extends AbstractActionController
         
             $start = $this->getRequest()->getPost('start');
             $length =  $this->getRequest()->getPost('length');
-        
-            // search is not being used in this tool
-            //$search = $this->getRequest()->getPost('search');
-            //$search = $search['value'];
+
         
             $dataCount = $melisPageHistoricTable->getTotalData('hist_page_id',$pageId);
         

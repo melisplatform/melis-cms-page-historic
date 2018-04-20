@@ -4,9 +4,6 @@ var $body = $("body");
 // listeners
 $("body").on("click", ".melis-savepage, .melis-publishpage, .melis-unpublishpage", function() {
 	var pageId = $(this).data("pagenumber");
-	//melisHelper.zoneReload(pageId+"_id_meliscms_center_page_tabs_historic_table", "melispagehistoric_table"); 
-	//melisHelper.zoneReload("_id_meliscms_center_page_tabs_historic_table", "melispagehistoric_table");
-	//$(".melis-refreshPageTable").trigger("click"); 
 });
 
 
