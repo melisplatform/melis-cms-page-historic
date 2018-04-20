@@ -1,0 +1,20 @@
+<melis-cms-page-historic>
+	<package_info>
+		<mp_title>Melis Cms Page Historic</mp_title>
+		<mp_subtitle>The module that brings a historic tab in your page's edition</mp_subtitle>
+		<mp_description>
+			This module shows a new tab "Historic" in the page's edition.<br />
+			All actions made on the page are shown there: saving, publishing, unpublishing<br />
+			These logs allow to have a trace of what actions were made and who made them.
+		</mp_description>
+		<mp_maintainers>melisplatform</mp_maintainers>
+		<mp_group>Melis Cms</mp_group>
+	</package_info>
+	<package_images>
+		<img_1>
+			<mpi_image_title>MelisCmsPageHistoric</mpi_image_title>
+			<mpi_image_file>melis-cms-page-historic_1.JPG</mpi_image_file>
+			<mpi_image_main>1</mpi_image_main>
+		</img_1>
+	</package_images>
+</melis-cms-page-historic>
