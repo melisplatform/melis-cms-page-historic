@@ -64,6 +64,7 @@ return array(
                  * lesser requests
                  */
                 'build' => [
+                    'use_bundle' => true,
                     // lists of assets that will be loaded in the layout
                     'css' => [
 
