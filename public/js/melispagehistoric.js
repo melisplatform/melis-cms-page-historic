@@ -4,9 +4,6 @@ var $body = $("body");
 // listeners
 $("body").on("click", ".melis-savepage, .melis-publishpage, .melis-unpublishpage", function() {
 	var pageId = $(this).data("pagenumber");
-	//melisHelper.zoneReload(pageId+"_id_meliscms_center_page_tabs_historic_table", "melispagehistoric_table"); 
-	//melisHelper.zoneReload("_id_meliscms_center_page_tabs_historic_table", "melispagehistoric_table");
-	//$(".melis-refreshPageTable").trigger("click"); 
 });
 
 
@@ -24,7 +21,8 @@ window.initHistoric = function(data, tblSettings) {
 	
 	// pass what page ID to be used when displaying page historic
 	data.pageId = pageId;
-}
+};
+
 window.initDashboardPageHistoric = function() {
 	setTimeout(function() {
 		var historic = $("#id_melispagehistoric_dashboard_recent_activity_pages");
@@ -38,13 +36,13 @@ window.initDashboardPageHistoric = function() {
             nextTab.addClass("active");
 		}
 	}, 100);
-}
+};
 
 // OPEN HISTORIC FROM DASHBOARD WIDGET
 function openHitoricFromDashboard(){
     var data = $(this).data();
     melisHelper.tabOpen( data.pageTitle, data.pageIcon, data.zoneId, data.melisKey,  { idPage: data.pageId } );
-}
+};
 
 //open historic event
 $body.on("click", '.melis-openrecenthistoric', openHitoricFromDashboard );
