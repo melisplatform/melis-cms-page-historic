@@ -3,30 +3,6 @@
 
 return array(
 	'plugins' => array(
-		'meliscore_dashboard' => array(
-			'interface' => array(
-				'meliscore_dashboard_recent_activity' => array(
-					'interface' => array(
-						'melispagehistoric_dashboard_recent_activity_pages' => array(
-							'conf' => array(
-								'id' => 'id_melispagehistoric_dashboard_recent_activity_pages',
-								'name' => 'tr_melispagehistoric_dashboard_recent_activity_Pages',
-								'melisKey' => 'melispagehistoric_dashboard_recent_activity_pages',
-								'icon' => 'file',
-								'maxLines' => 8,
-							),
-							'forward' => array(
-								'module' => 'MelisCmsPageHistoric',
-								'controller' => 'Dashboard',
-								'action' => 'recentActivityPages',
-								'jscallback' => 'initDashboardPageHistoric();',
-								'jsdatas' => array()
-							),
-						),
-					),
-				),
-			),
-		),
 		'meliscms' => array(
 			'interface' => array(
 				'meliscms_page' => array(

@@ -11,13 +11,8 @@ namespace MelisCmsPageHistoric;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Db\TableGateway\TableGateway;
-use Zend\Stdlib\Hydrator\ObjectProperty;
-use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Session\Container;
-use MelisCmsPageHistoric\Model\MelisPageHistoric;
-use MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable;
 
 use MelisCmsPageHistoric\Listener\MelisPageHistoricDeletePageListener;
 use MelisCmsPageHistoric\Listener\MelisPageHistoricPageEventListener;
@@ -69,11 +64,13 @@ class Module
 			include __DIR__ . '/../config/app.forms.php',
             include __DIR__ . '/../config/app.tools.php',
 	        include __DIR__ . '/../config/diagnostic.config.php',
+    	    
+	        include __DIR__ . '/../config/dashboard-plugins/MelisCmsPageHistoricRecentUserActivityPlugin.config.php',
     	);
     	
     	foreach ($configFiles as $file) {
     		$config = ArrayUtils::merge($config, $file);
-    	} 
+    	}
     	
     	return $config;
     }
@@ -130,13 +127,4 @@ class Module
             }
     	}
     }
-    
-    public function setTable($tableName)
-    {
-    	$tableGateway = $sm->get($tableName . "Gateway");
-    	$table = new $tableName($tableGateway);
-    	return $table;
-    }
-    
-    
 }

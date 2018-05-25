@@ -58,14 +58,20 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'MelisCmsPageHistoric\Controller\PageHistoric' => 'MelisCmsPageHistoric\Controller\PageHistoricController',
-            'MelisCmsPageHistoric\Controller\Dashboard' => 'MelisCmsPageHistoric\Controller\DashboardController',
     	),
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'MelisCmsPageHistoricRecentUserActivityPlugin' => 'MelisCmsPageHistoric\Controller\DashboardPlugins\MelisCmsPageHistoricRecentUserActivityPlugin',
+        )
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
         'template_map' => array(
+            // Dashboard plugin templates
+            'melis-cms-page-historic/dashboard-plugin/recent-user-activity'  => __DIR__ . '/../view/melis-cms-page-historic/dashboard-plugins/recent-user-activity.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

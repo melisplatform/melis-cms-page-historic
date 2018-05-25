@@ -26,10 +26,12 @@
 	    'tr_melispagehistoric_paginator_First' => 'Première',
 	    'tr_melispagehistoric_paginator_Last' => 'Dernière',
 	    
-	    'tr_melispagehistoric_empty_historic_text' => "Cette page n'a pas d'historique",
+	    'tr_melispagehistoric_empty_historic_text' => 'Cette page n\'a pas d\'historique',
 
-		// Dashboard
-		'tr_melispagehistoric_dashboard_recent_activity_Pages' => 'Pages',
-	    
+	    // Dashboard
+	    'tr_PluginSection_meliscmspagehistoric' => 'Melis Cms Page Historic',
+	    'tr_melispagehistoric_dashboard_recent_activity_Pages' => 'Recent user page activity',
+	    'tr_melispagehistoric_dashboard_recent_activity_Pages description' => 'Display the recent user page activities',
+	    'tr_melispagehistoric_dashboard_recent_activity_Pages_meliscms_deactivated' => 'This plugin requered MelisCms module to be activated',
 	);
 ?>

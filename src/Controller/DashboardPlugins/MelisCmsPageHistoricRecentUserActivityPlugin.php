@@ -7,45 +7,45 @@
  *
  */
 
-namespace MelisCmsPageHistoric\Controller;
+namespace MelisCmsPageHistoric\Controller\DashboardPlugins;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use MelisCore\Controller\DashboardPlugins\MelisCoreDashboardTemplatingPlugin;
 use Zend\View\Model\ViewModel;
 use Zend\Session\Container;
 use MelisCms\Service\MelisCmsRightsService;
 
-/**
- * Dashboard controller for MelisCmsPageHistoric
- * 
- * Used to render dashboard components in MelisPlatform Back Office
- *
- */
-class DashboardController extends AbstractActionController
+
+class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTemplatingPlugin
 {
+    public function __construct()
+    {
+        $this->pluginModule = 'meliscmspagehistoric';
+        parent::__construct();
+    }
+    
     /**
      * Adds page's recent activity on the dashboard
      */
-	public function recentActivityPagesAction()
-	{
-		$melisKey = $this->params()->fromRoute('melisKey', '');
+    public function recentActivityPages()
+    {
         $finalPages = [];
         $pageId     = null;
         $pageMelisKey = null;
-		if($this->isCmsActive()) {
-
+        
+        if($this->isCmsActive()) 
+        {
             $melisTranslation = $this->getServiceLocator()->get('MelisCoreTranslation');
             $melisAppConfig = $this->getServiceLocator()->get('MelisCoreConfig');
             $melisCoreAuth = $this->getServiceLocator()->get('MelisCoreAuth');
             $melisCmsRights = $this->getServiceLocator()->get('MelisCmsRights');
-
+            
             $translator = $this->getServiceLocator()->get('translator');
-
+            
             $melisKeys = $melisAppConfig->getMelisKeys();
-            $fullKey = $melisKeys['melispagehistoric_dashboard_recent_activity_pages'];
             $fullKeyPage = $melisKeys['meliscms_page'];
-
+            
             $xmlRights = $melisCoreAuth->getAuthRights();
-
+            
             $pageId = '';
             $pageMelisKey = '';
             $itemConfigPage = $melisAppConfig->getItem($fullKeyPage);
@@ -54,32 +54,32 @@ class DashboardController extends AbstractActionController
                 $pageId = $itemConfigPage['conf']['id'];
                 $pageMelisKey = $itemConfigPage['conf']['melisKey'];
             }
-
+            
             $container = new Container('meliscore');
             $locale = $container['melis-lang-locale'];
-            $itemConfig = $melisAppConfig->getItem($fullKey);
+            
             $maxLines = 8;
-            if (!empty($itemConfig['conf']['maxLines']))
-                $maxLines = $itemConfig['conf']['maxLines'];
-
+            if (!empty($this->pluginConfig['max_lines']))
+                $maxLines = $this->pluginConfig['max_lines'];
+                
             $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPagehistoricTable');
             $melisPage = $this->getServiceLocator()->get('MelisPagehistoricTable');
             $userTable = $this->getServiceLocator()->get('MelisCoreTableUser');
-
+            
             $pages = $melisPageHistoricTable->getPagesHistoricForDashboard($maxLines);
-
+            
             $finalPages = array();
             if ($pages)
             {
                 $pages = $pages->toArray();
-
+                
                 foreach ($pages as $keyPage => $page)
                 {
-                    $melisPage = $this->serviceLocator->get('MelisEnginePage');
+                    $melisPage = $this->getServiceLocator()->get('MelisEnginePage');
                     $datasPage = $melisPage->getDatasPage($page['pageId'], 'saved');
                     if (!empty($datasPage))
                         $datasPage = $datasPage->getMelisPageTree();
-
+                        
                     $datasPageHistoric = $melisPageHistoricTable->getDescendingHistoric($page['pageId'], 1);
                     $datasPageHistoric = $datasPageHistoric->toArray();
                     $datasPageHistoric = $datasPageHistoric[0];
@@ -94,10 +94,9 @@ class DashboardController extends AbstractActionController
                             $name = $datasUser['usr_firstname'] . ' ' . $datasUser['usr_lastname'];
                         }
                     }
-
+                    
                     $date = strftime($melisTranslation->getDateFormatByLocate($locale), strtotime($datasPageHistoric['hist_date']));
-
-
+                    
                     $data_icon = 'fa fa-file-o';
                     if (!empty($datasPage))
                     {
@@ -108,7 +107,7 @@ class DashboardController extends AbstractActionController
                         if ($datasPage->page_type == 'FOLDER')
                             $data_icon = 'fa fa-folder-open-o';
                     }
-
+                    
                     $actionIcon = '';
                     if ($datasPageHistoric['hist_action'] == 'Publish')
                         $actionIcon = 'fa fa-circle fa-color-green';
@@ -118,13 +117,13 @@ class DashboardController extends AbstractActionController
                         $actionIcon = 'fa fa-save';
                     if ($datasPageHistoric['hist_action'] == 'Delete')
                         $actionIcon = 'fa fa-times fa-color-red';
-
+                        
                     $isAccessible = $melisCmsRights->isAccessible($xmlRights, MelisCmsRightsService::MELISCMS_PREFIX_PAGES, $page['pageId']);
-
+                    
                     $pageName = $translator->translate('tr_meliscms_page_Page');
                     if (!empty($datasPage->page_name))
                         $pageName = $datasPage->page_name;
-
+                        
                     $pageFinal = array(
                         'page_id' => $page['pageId'],
                         'page_name' => $pageName,
@@ -136,53 +135,42 @@ class DashboardController extends AbstractActionController
                         'hist_action_icon' => $actionIcon,
                         'page_accessible' => (string)$isAccessible,
                     );
-
-
+                    
                     $finalPages[] = $pageFinal;
                 }
             }
         }
-        else {
+        else 
+        {
             $config = $this->getServiceLocator()->get('config');
             unset($config['plugins']['meliscore_dashboard']['interface']['meliscore_dashboard_recent_activity']);
         }
-
-
-		
-		$view = new ViewModel();
-		$view->melisKey = $melisKey;
-		$view->pages = $finalPages;
-		
-		$view->pageId = $pageId;
-		$view->pageMelisKey = $pageMelisKey;
-		$view->isCmsActive = $this->isCmsActive();
-		return $view;
-	}
-
-    private function isCmsInActive()
-    {
-        $melisCms  = 'MelisCms';
-        $moduleSvc = $this->getServiceLocator()->get('ModulesService');
-        $modules   = $moduleSvc->getInActiveModules();
-
-        if(in_array($melisCms, $modules)) {
-            return true;
-        }
-
-        return false;
+        
+        $view = new ViewModel();
+        $view->setTemplate('melis-cms-page-historic/dashboard-plugin/recent-user-activity');
+        $view->pages = $finalPages;
+        
+        $view->pageId = $pageId;
+        $view->pageMelisKey = $pageMelisKey;
+        $view->isCmsActive = $this->isCmsActive();
+        return $view;
     }
-
-	private function isCmsActive()
+    
+    /**
+     * Checking if MelisCms modul is activated
+     * 
+     * @return boolean
+     */
+    private function isCmsActive()
     {
         $melisCms  = 'MelisCms';
         $moduleSvc = $this->getServiceLocator()->get('ModulesService');
         $modules   = $moduleSvc->getActiveModules();
-
+        
         if(in_array($melisCms, $modules)) {
             return true;
         }
-
-         return false;
+        
+        return false;
     }
-
 }
