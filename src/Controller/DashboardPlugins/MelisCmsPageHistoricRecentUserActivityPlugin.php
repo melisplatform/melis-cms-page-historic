@@ -66,7 +66,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
             $melisPage = $this->getServiceLocator()->get('MelisPagehistoricTable');
             $userTable = $this->getServiceLocator()->get('MelisCoreTableUser');
             
-            $pages = $melisPageHistoricTable->getPagesHistoricForDashboard($maxLines);
+            $pages = $melisPageHistoricTable->getPagesHistoricForDashboard((int)$maxLines);
             
             $finalPages = array();
             if ($pages)
