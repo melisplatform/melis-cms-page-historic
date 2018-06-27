@@ -30,8 +30,8 @@
 
 	    // Dashboard
 	    'tr_PluginSection_meliscmspagehistoric' => 'Melis Cms Page Historic',
-	    'tr_melispagehistoric_dashboard_recent_activity_Pages' => 'Recent user page activity',
-	    'tr_melispagehistoric_dashboard_recent_activity_Pages description' => 'Display the recent user page activities',
-	    'tr_melispagehistoric_dashboard_recent_activity_Pages_meliscms_deactivated' => 'This plugin requered MelisCms module to be activated',
+	    'tr_melispagehistoric_dashboard_recent_activity_Pages' => 'Page d\'activité récente de l\'utilisateur',
+	    'tr_melispagehistoric_dashboard_recent_activity_Pages description' => 'Ce plugin affiche l\'activité récente de la page utilisateur.',
+	    'tr_melispagehistoric_dashboard_recent_activity_Pages_meliscms_deactivated' => 'Ce plugin nécessitait l\'activation du module Melis Cms',
 	);
 ?>
