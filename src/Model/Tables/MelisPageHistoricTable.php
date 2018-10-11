@@ -9,6 +9,7 @@
 
 namespace MelisCmsPageHistoric\Model\Tables;
 
+use Zend\Db\Sql\Expression;
 use Zend\Db\TableGateway\TableGateway;
 use MelisEngine\Model\Tables\MelisGenericTable;
 
@@ -29,17 +30,18 @@ class MelisPageHistoricTable extends MelisGenericTable
 		parent::__construct($tableGateway);
 		$this->idField = 'hist_page_id';
 	}
-	
+
 	/**
 	 * Get Page Historic Data for MelisCms
 	 * @param array $options
 	 * @param string $fixedCriteria
 	 */
-	public function getPageHistoricData(array $options, $fixedCriteria = null)
+	public function getPageHistoricData(array $options, $fixedCriteria = null, $user = null, $action = null)
 	{
 	    $select = $this->tableGateway->getSql()->select();
 	    $result = $this->tableGateway->select();
-	
+	    $select->join('melis_core_user', 'melis_core_user.usr_id = melis_hist_page_historic.hist_user_id', ['fullname' => new Expression("CONCAT(usr_firstname, ' ', usr_lastname)")], $select::JOIN_INNER);
+
 	    $where = !empty($options['where']['key']) ? $options['where']['key'] : '';
 	    $whereValue = !empty($options['where']['value']) ? $options['where']['value'] : '';
 	
@@ -93,27 +95,34 @@ class MelisPageHistoricTable extends MelisGenericTable
 	            ), PredicateSet::OP_AND);
 	        }
 	    }
+
+	    if ($user) {
+            $select->where(new \Zend\Db\Sql\Predicate\Expression("CONCAT(usr_firstname, ' ', usr_lastname) = '" . $user . "'"));
+        }
+
+        if ($action) {
+            $select->where(['hist_action' => $action]);
+        }
 	
 	    // used when column ordering is clicked
 	    if(!empty($order))
 	        $select->order($order . ' ' . $orderDir);
 	
 	
-	        $getCount = $this->tableGateway->selectWith($select);
-	        $this->setCurrentDataCount((int) $getCount->count());
-	
-	
-	        // this is used in paginations
-	        $select->limit($limit);
-	        $select->offset($start);
-	
-	        $resultSet = $this->tableGateway->selectWith($select);
-	
-	        $sql = $this->tableGateway->getSql();
-	        $raw = $sql->getSqlstringForSqlObject($select);
-	
-	        return $resultSet;
-	
+        $getCount = $this->tableGateway->selectWith($select);
+        $this->setCurrentDataCount((int) $getCount->count());
+
+
+        // this is used in paginations
+        $select->limit($limit);
+        $select->offset($start);
+
+        $resultSet = $this->tableGateway->selectWith($select);
+
+        $sql = $this->tableGateway->getSql();
+        $raw = $sql->getSqlstringForSqlObject($select);
+
+        return $resultSet;
 	}
 	
 	public function getHistoryByPageId($pageId)
@@ -144,5 +153,37 @@ class MelisPageHistoricTable extends MelisGenericTable
 
         return $resultSet;
 
+    }
+
+    /**
+     * This will return all distinct actions
+     * @param string $order
+     * @return mixed
+     */
+    public function getPageHistoricListOfActions($order = 'ASC')
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(["action" => new Expression('DISTINCT(hist_action)')]);
+        $select->order('hist_action' . ' '  . $order);
+        $resultSet = $this->tableGateway->selectWith($select);
+
+        return $resultSet;
+    }
+
+    /**
+     * This will return all users
+     * @return mixed
+     */
+    public function getUsers() {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(["fullname" => new Expression("DISTINCT(CONCAT(usr_firstname, ' ', usr_lastname))")]);
+        $select->join('melis_core_user',
+            'melis_core_user.usr_id = melis_hist_page_historic.hist_user_id',
+            [],
+            $select::JOIN_INNER
+        );
+        $resultSet = $this->tableGateway->selectWith($select);
+
+        return $resultSet;
     }
 }

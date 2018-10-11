@@ -17,8 +17,28 @@ return array(
                         'ajaxCallback' => '',
                         'filters' => array(
                             'left' => array(
+                                'pagehistoric-limit' => array(
+                                    'module' => 'MelisCmsPageHistoric',
+                                    'controller' => 'PageHistoric',
+                                    'action' => 'render-page-historic-table-limit'
+                                ),
+                                'pagehistoric-search-user' => array(
+                                    'module' => 'MelisCmsPageHistoric',
+                                    'controller' => 'PageHistoric',
+                                    'action' => 'render-page-historic-content-filters-search-user'
+                                ),
                             ),
                             'center' => array(
+                                'pagehistoric-date-filter' => array(
+                                    'module' => 'MelisCmsPageHistoric',
+                                    'controller' => 'PageHistoric',
+                                    'action' => 'render-page-historic-content-filters-date'
+                                ),
+                                'pagehistoric-actions-filter' => array(
+                                    'module' => 'MelisCmsPageHistoric',
+                                    'controller' => 'PageHistoric',
+                                    'action' => 'render-page-historic-content-filters-actions'
+                                ),
                             ),
                             'right' => array(
                                 'pagehistoric-refresh' => array(
