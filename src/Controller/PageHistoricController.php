@@ -14,6 +14,7 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Session\Container;
 use Zend\Json\Json;
+use Zend\View\View;
 
 /**
  * Page Historic Controller
@@ -68,7 +69,55 @@ class PageHistoricController extends AbstractActionController
         
         return $view;
     }
-    
+
+    /**
+     * Renders the select limit for the datatable
+     * @return ViewModel
+     */
+    public function renderPageHistoricTableLimitAction()
+    {
+        return new ViewModel();
+    }
+
+    /**
+     * Renders the input filter for users
+     * @return ViewModel
+     */
+    public function renderPageHistoricContentFiltersSearchUserAction()
+    {
+        return new ViewModel();
+    }
+
+    /**
+     * Renders the date range filter
+     * @return ViewModel
+     */
+    public function renderPageHistoricContentFiltersDateAction()
+    {
+        return new ViewModel();
+    }
+
+    /**
+     * Renders the actions filter
+     * @return ViewModel
+     */
+    public function renderPageHistoricContentFiltersActionsAction()
+    {
+        $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPagehistoricTable');
+        //get distinct actions on database
+        $actions = $melisPageHistoricTable->getPageHistoricListOfActions()->toArray();
+
+        $options = '<option value="">' . "translation here" . '</option>';
+        foreach ($actions as $action) {
+            $options .= '<option value="' . $action['action'] . '">' . $action['action'] . '</option>';
+        }
+
+        $view = new ViewModel();
+        $view->options = $options;
+
+        return $view;
+    }
+
     /**
      * Renders to the refresh button in the datatable
      * @return \Zend\View\Model\ViewModel
@@ -84,7 +133,6 @@ class PageHistoricController extends AbstractActionController
      */
     public function getPageHistoricDataAction()
     {
-        
         $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPagehistoricTable');
         $melisUserTable = $this->serviceLocator->get('MelisCoreTableUser');
         
@@ -100,39 +148,38 @@ class PageHistoricController extends AbstractActionController
         $dataCount = 0;
         $draw = 0;
         $tableData = array();
-        if($this->getRequest()->isPost())
-        {
-        
+        if ($this->getRequest()->isPost()) {
             $pageId = (int) $this->getRequest()->getPost('pageId');
-            
-            $colId = array_keys($melisTool->getColumns());
+            $userName = $this->getRequest()->getPost('user_name', null);
+            $action = $this->getRequest()->getPost('action', null);
 
+            $colId = array_keys($melisTool->getColumns());
             $selCol = $this->getRequest()->getPost('order');
             $selCol = $colId[$selCol[0]['column']];
 
-            if($selCol != 'hist_id') {
+            $startDate = $this->getRequest()->getPost('startDate');
+            $endDate = $this->getRequest()->getPost('endDate');
+
+            if ($selCol != 'hist_id') {
                 $sortOrder = $this->getRequest()->getPost('order');
                 $sortOrder = $sortOrder[0]['dir'];
             }
             else {
                 $sortOrder = 'desc';
             }
-
         
             $draw = $this->getRequest()->getPost('draw');
-        
             $start = $this->getRequest()->getPost('start');
             $length =  $this->getRequest()->getPost('length');
 
-        
             $dataCount = $melisPageHistoricTable->getTotalData('hist_page_id',$pageId);
-        
-            $getData = $melisPageHistoricTable->getPageHistoricData(array(
+
+            $option = array(
                 'where' => array(
                     'key' => 'hist_page_id',
                     'value' => $pageId,
                 ),
-                // fixed order, since page historic is sorting descendingly using history ID 
+                // fixed order, since page historic is sorting descendingly using history ID
                 'order' => array(
                     'key' => 'hist_id',
                     'dir' => 'desc',
@@ -140,8 +187,21 @@ class PageHistoricController extends AbstractActionController
                 'start' => $start,
                 'limit' => $length,
                 'columns' => $melisTool->getSearchableColumns(),
-                'date_filter' => array(),
-            ));
+                'date_filter' => array(
+
+                ),
+            );
+
+            if ($startDate != NULL && $endDate != NULL) {
+                $option['date_filter'] = [
+                    'key' => 'hist_date',
+                    'startDate' => date('Y-m-d', strtotime($startDate)),
+                    'endDate' => date('Y-m-d', strtotime($endDate))
+                ];
+            }
+
+            $getData = $melisPageHistoricTable->getPageHistoricData($option, null, $userName, $action);
+
         
             // store fetched Object Data into array so we can apply any string modifications
             foreach($getData as $key => $values)
@@ -236,15 +296,12 @@ class PageHistoricController extends AbstractActionController
     	}
     	
     	$description = '';
-    	switch($pageAction)
-    	{
+
+    	switch ($pageAction) {
     	    case 'Save':
-    	        if($isNew)
-    	        {
+    	        if ($isNew) {
     	            $description = 'tr_melispagehistoric_description_text_new';
-    	        }
-    	        else
-    	        {
+    	        } else {
     	            $description = 'tr_melispagehistoric_description_text_save';
     	        }
 	            break;
@@ -256,11 +313,11 @@ class PageHistoricController extends AbstractActionController
 	            break;
     	}
 
-    	if($idPage) 
-    	{
+    	if ($idPage) {
     	    $userId = (int) null;
     	    $userAuthDatas =  $melisCoreAuth->getStorage()->read();
-    	    if($userAuthDatas)
+
+    	    if ($userAuthDatas)
     	       $userId = $userAuthDatas->usr_id;
     	     
     	    $histDatas = array(
@@ -273,7 +330,6 @@ class PageHistoricController extends AbstractActionController
     	    
     	    $melisPageHistoricTable->save($histDatas);
     	}
-
 
     	$this->getEventManager()->trigger('meliscmspagehistoric_historic_save_end', $this, $histDatas);
     }
@@ -312,7 +368,17 @@ class PageHistoricController extends AbstractActionController
         $this->getEventManager()->trigger('meliscmspagehistoric_historic_delete_end', $this, $responseData);
     }
 
+    /**
+     * Gets all back office users that has a record in database
+     * @return JsonModel
+     */
+    public function getBackOfficeUsersAction()
+    {
+        $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
+        $users = $melisPageHistoricTable->getUsers()->toArray();
 
-    
-
+        return new JsonModel(array(
+            'users' => $users,
+        ));
+    }
 }
