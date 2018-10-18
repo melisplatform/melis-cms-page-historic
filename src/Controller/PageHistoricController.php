@@ -106,8 +106,9 @@ class PageHistoricController extends AbstractActionController
         $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPagehistoricTable');
         //get distinct actions on database
         $actions = $melisPageHistoricTable->getPageHistoricListOfActions()->toArray();
+        $translator = $this->getServiceLocator()->get('translator');
 
-        $options = '<option value="">' . "translation here" . '</option>';
+        $options = '<option value="">' . $translator->translate('tr_melispagehistoric_filter_action_select') . '</option>';
         foreach ($actions as $action) {
             $options .= '<option value="' . $action['action'] . '">' . $action['action'] . '</option>';
         }
