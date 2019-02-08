@@ -1,37 +1,41 @@
-<div class="widget-activity">
-	<?php 
-        if ($this->isCmsActive){
-    ?>
-        <ul class="list">
-        	<?php 
-        		foreach ($this->pages as $page)
-        		{
-        			$tagsOpening = 'class="disable-widget-hover"';
-        			if ($page['page_accessible'])
-        				$tagsOpening = 'class="melis-openrecenthistoric" data-page-title="' . $page['page_name'] . '"  data-page-icon="' . $page['page_icon'] . '" data-zone-id="' . $page['page_id'] . '_' . $this->pageId . '" data-melis-key="' . $this->pageMelisKey . '" data-page-id="' . $page['page_id'] . '"';
-        				
-        			$histActionIcon = '';
-        			if (!empty($page['hist_action_icon']))
-        				$histActionIcon = '<span class="' . $page['hist_action_icon'] . '"></span>';
-        	?>
-        		<li <?= $tagsOpening; ?>>
-        			<span ><?= $page['hist_date']; ?> :
-        				<?= $histActionIcon; ?>
-        				<span class="ra-username"><?= $page['page_name']; ?> (<?= $page['page_id']; ?>)</span>, 
-        				<?= $page['hist_action']; ?>,
-        				<span class="ra-username"><?= $page['hist_user_name']; ?></span>.
-        			</span>
-        			<div class="clearfix"></div>
-        		</li>
-        	<?php 
-        		}
-        	?>				
-        </ul>
-	<?php 
-		}else{
-	?>	
-		<div class="alert alert-warning">
-			<p><?php $this->translate('tr_melispagehistoric_dashboard_recent_activity_Pages_meliscms_deactivated')?> </p>
-		</div>
-	<?php }?>
-</div>
+<?php if($this->isAccessable) { ?>
+    <div class="widget-activity">
+        <?php
+            if ($this->isCmsActive){
+        ?>
+            <ul class="list">
+                <?php
+                    foreach ($this->pages as $page)
+                    {
+                        $tagsOpening = 'class="disable-widget-hover"';
+                        if ($page['page_accessible'])
+                            $tagsOpening = 'class="melis-openrecenthistoric" data-page-title="' . $page['page_name'] . '"  data-page-icon="' . $page['page_icon'] . '" data-zone-id="' . $page['page_id'] . '_' . $this->pageId . '" data-melis-key="' . $this->pageMelisKey . '" data-page-id="' . $page['page_id'] . '"';
+
+                        $histActionIcon = '';
+                        if (!empty($page['hist_action_icon']))
+                            $histActionIcon = '<span class="' . $page['hist_action_icon'] . '"></span>';
+                ?>
+                    <li <?= $tagsOpening; ?>>
+                        <span ><?= $page['hist_date']; ?> :
+                            <?= $histActionIcon; ?>
+                            <span class="ra-username"><?= $page['page_name']; ?> (<?= $page['page_id']; ?>)</span>,
+                            <?= $page['hist_action']; ?>,
+                            <span class="ra-username"><?= $page['hist_user_name']; ?></span>.
+                        </span>
+                        <div class="clearfix"></div>
+                    </li>
+                <?php
+                    }
+                ?>
+            </ul>
+        <?php
+            }else{
+        ?>
+            <div class="alert alert-warning">
+                <p><?php $this->translate('tr_melispagehistoric_dashboard_recent_activity_Pages_meliscms_deactivated')?> </p>
+            </div>
+        <?php }?>
+    </div>
+<?php } else { ?>
+    <span><?= $this->translate('tr_melisdashboardplugin_plugin_no_rights'); ?></span>
+<?php } ?>
