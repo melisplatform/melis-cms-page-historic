@@ -31,7 +31,7 @@
                 'interface' => array(
                     'MelisCmsPageHistoricRecentUserActivityPlugin' => array(
                         'conf' => array(
-                            'name' => 'MelisCmsPageHistoricRecentUserActivityPlugin',
+                            'name' => 'tr_melispagehistoric_dashboard_recent_activity_Pages',
                             'melisKey' => 'MelisCmsPageHistoricRecentUserActivityPlugin'
                         ),
                         'datas' => array(
