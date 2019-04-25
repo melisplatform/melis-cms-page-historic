@@ -110,7 +110,8 @@ class PageHistoricController extends AbstractActionController
 
         $options = '<option value="">' . $translator->translate('tr_melispagehistoric_filter_action_select') . '</option>';
         foreach ($actions as $action) {
-            $options .= '<option value="' . $action['action'] . '">' . $action['action'] . '</option>';
+            if($action['action'] != "Delete")
+                $options .= '<option value="' . $action['action'] . '">' . $action['action'] . '</option>';
         }
 
         $view = new ViewModel();
