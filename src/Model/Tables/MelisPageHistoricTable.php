@@ -143,6 +143,19 @@ class MelisPageHistoricTable extends MelisGenericTable
 	    return $resultSet;
 	}
 
+	public function getHistoricById($histId, $max = 1)
+	{
+	    $select = $this->tableGateway->getSql()->select();
+
+	    $select->order('hist_id DESC');
+	    $select->where(array('hist_id' => (int) $histId));
+	    if ($max)
+	    	$select->limit($max);
+	    $resultSet = $this->tableGateway->selectWith($select);
+
+	    return $resultSet;
+	}
+
     public function getPagesHistoricForDashboard($max = 5)
     {
         $select = $this->tableGateway->getSql()->select();
