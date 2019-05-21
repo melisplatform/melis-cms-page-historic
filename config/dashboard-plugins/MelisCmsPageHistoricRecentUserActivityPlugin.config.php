@@ -18,7 +18,7 @@
                         'jscallback' => '',
                         'max_lines' => 8,
                         'height' => 4,
-                        
+                        'section' => 'MelisCms',
                         'interface' => array(
                             'meliscmspagehistoric_events' => array(
                                 'forward' => array(
