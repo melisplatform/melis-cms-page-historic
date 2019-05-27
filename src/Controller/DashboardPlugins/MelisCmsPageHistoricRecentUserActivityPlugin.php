@@ -31,6 +31,14 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
         $finalPages = [];
         $pageId     = null;
         $pageMelisKey = null;
+
+        /** @var \MelisCore\Service\MelisCoreDashboardPluginsRightsService $dashboardPluginsService */
+        $dashboardPluginsService = $this->getServiceLocator()->get('MelisCoreDashboardPluginsService');
+        //get the class name to make it as a key to the plugin
+        $path = explode('\\', __CLASS__);
+        $className = array_pop($path);
+
+        $isPluginAccessible = $dashboardPluginsService->canAccess($className);
         
         if($this->isCmsActive()) 
         {
@@ -119,7 +127,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
                         $actionIcon = 'fa fa-save';
                     if ($datasPageHistoric['hist_action'] == 'Delete')
                         $actionIcon = 'fa fa-times fa-color-red';
-                        
+
                     $isAccessible = $melisCmsRights->isAccessible($xmlRights, MelisCmsRightsService::MELISCMS_PREFIX_PAGES, $page['pageId']);
                     
                     $pageName = $translator->translate('tr_meliscms_page_Page');
@@ -155,6 +163,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
         $view->pageId = $pageId;
         $view->pageMelisKey = $pageMelisKey;
         $view->isCmsActive = $this->isCmsActive();
+        $view->isAccessable = $isPluginAccessible;
         return $view;
     }
     
