@@ -116,6 +116,10 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
                             $data_icon = 'fa fa-home';
                         if ($datasPage->page_type == 'FOLDER')
                             $data_icon = 'fa fa-folder-open-o';
+                        if ($datasPage->page_type == 'NEWSLETTER')
+                            $data_icon = 'fa fa-newspaper-o';
+                        if ($datasPage->page_type == 'NEWS_DETAIL')
+                            $data_icon = 'fa fa-file-o';
                     }
                     
                     $actionIcon = '';
