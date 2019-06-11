@@ -31,6 +31,14 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
         $finalPages = [];
         $pageId     = null;
         $pageMelisKey = null;
+
+        /** @var \MelisCore\Service\MelisCoreDashboardPluginsRightsService $dashboardPluginsService */
+        $dashboardPluginsService = $this->getServiceLocator()->get('MelisCoreDashboardPluginsService');
+        //get the class name to make it as a key to the plugin
+        $path = explode('\\', __CLASS__);
+        $className = array_pop($path);
+
+        $isPluginAccessible = $dashboardPluginsService->canAccess($className);
         
         if($this->isCmsActive()) 
         {
@@ -67,20 +75,22 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
             $userTable = $this->getServiceLocator()->get('MelisCoreTableUser');
             
             $pages = $melisPageHistoricTable->getPagesHistoricForDashboard((int)$maxLines);
-            
+
+
             $finalPages = array();
             if ($pages)
             {
                 $pages = $pages->toArray();
-                
                 foreach ($pages as $keyPage => $page)
                 {
                     $melisPage = $this->getServiceLocator()->get('MelisEnginePage');
                     $datasPage = $melisPage->getDatasPage($page['pageId'], 'saved');
                     if (!empty($datasPage))
                         $datasPage = $datasPage->getMelisPageTree();
-                        
-                    $datasPageHistoric = $melisPageHistoricTable->getDescendingHistoric($page['pageId'], 1);
+
+
+                    $datasPageHistoric = $melisPageHistoricTable->getHistoricById($page['hist_id']);
+//                    $datasPageHistoric = $melisPageHistoricTable->getDescendingHistoric($page['pageId'], 1);
                     $datasPageHistoric = $datasPageHistoric->toArray();
                     $datasPageHistoric = $datasPageHistoric[0];
                     $datasUser = $userTable->getEntryById($datasPageHistoric['hist_user_id']);
@@ -106,6 +116,10 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
                             $data_icon = 'fa fa-home';
                         if ($datasPage->page_type == 'FOLDER')
                             $data_icon = 'fa fa-folder-open-o';
+                        if ($datasPage->page_type == 'NEWSLETTER')
+                            $data_icon = 'fa fa-newspaper-o';
+                        if ($datasPage->page_type == 'NEWS_DETAIL')
+                            $data_icon = 'fa fa-file-o';
                     }
                     
                     $actionIcon = '';
@@ -117,7 +131,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
                         $actionIcon = 'fa fa-save';
                     if ($datasPageHistoric['hist_action'] == 'Delete')
                         $actionIcon = 'fa fa-times fa-color-red';
-                        
+
                     $isAccessible = $melisCmsRights->isAccessible($xmlRights, MelisCmsRightsService::MELISCMS_PREFIX_PAGES, $page['pageId']);
                     
                     $pageName = $translator->translate('tr_meliscms_page_Page');
@@ -153,6 +167,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
         $view->pageId = $pageId;
         $view->pageMelisKey = $pageMelisKey;
         $view->isCmsActive = $this->isCmsActive();
+        $view->isAccessable = $isPluginAccessible;
         return $view;
     }
     
