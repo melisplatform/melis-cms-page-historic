@@ -14,7 +14,7 @@ return array(
                         'target' => '',
                         'ajaxUrl' => '/melis/MelisCmsPageHistoric/PageHistoric/getPageHistoricData',
                         'dataFunction' => 'initHistoric',
-                        'ajaxCallback' => '',
+                        'ajaxCallback' => 'paginateDataTables()',
                         'filters' => array(
                             'left' => array(
                                 'pagehistoric-limit' => array(
