@@ -7,47 +7,43 @@
 
 <div <?= $id; ?> data-melisKey="<?= $data_melisKey; ?>" data-page-id="<?= $this->idPage ?>" class="melis-page-table-cont">
 	<div class="col-sm-12">
-			<?php 
+		<?php 
 			/* 
-			 * This functions prepares the TABLE element in HTML. ID and class associative array attribute will be placed in table like
-			 * <table id="tableToolProspect" class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs js-table-sortable">
-             */
+			* This functions prepares the TABLE element in HTML. ID and class associative array attribute will be placed in table like
+			* <table id="tableToolProspect" class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs js-table-sortable">
+			*/
 			$this->melisGenericTable()->setTable(array(
-			    'id' => 'tableHistoricPageId'.$this->idPage,
-			    'data-pagenumber' => $this->idPage,
-			    'class' => 'tableHistoric table table-striped table-primary dt-responsive nowrap',
-			    'cellspacing' => '0',
-			    'width' => '100%'
-		     ));
+				'id' => 'tableHistoricPageId'.$this->idPage,
+				'data-pagenumber' => $this->idPage,
+				'class' => 'tableHistoric table table-striped table-primary dt-responsive nowrap',
+				'cellspacing' => '0',
+				'width' => '100%'
+			));
 			/**
 			 * This process retrieves the value inside the View Model that is being generated from app.tools.php `columns` attribute
 			 *  @reference please see app.tools.php
 			 */
-            $columns = array();
-            $columnStyle = array();
-            foreach($this->tableColumns as $columnText)
-            {
-                $columns[] = $columnText['text']; 
+			$columns = array();
+			$columnStyle = array();
+			foreach($this->tableColumns as $columnText)
+			{
+				$columns[] = $columnText['text']; 
 
-            }
+			}
 
-            // this process inserts all the array columns into the table.
-            // the 'center' value indicates where your column texts are positioned.
+			// this process inserts all the array columns into the table.
+			// the 'center' value indicates where your column texts are positioned.
 			$this->melisGenericTable()->setColumns($columns);
 			
 			echo '<br//>'.$this->melisGenericTable()->renderTable();
-			?>
-			<!-- // END TABLE -->
-			
-			
-			<script type="text/javascript">
+		?>
+		<!-- // END TABLE -->
+		<script type="text/javascript">
 			// this script cannot be separated to this file since all table configuration and initialization are done here
 			// render table to DataTable plugin
 			$(document).ready(function() {
-					<?= $this->getToolDataTableConfig; ?>
-
-
+				<?= $this->getToolDataTableConfig; ?>
 			});
-			</script>
+		</script>
 	</div>
 </div>

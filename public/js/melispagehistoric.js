@@ -23,19 +23,21 @@ $(function(){
             // get the current page ID
             var pageId = $("#" + tblSettings.sTableId ).data("pagenumber");
             
-            // pass what page ID to be used when displaying page historic
-            data.pageId = pageId;
+                // pass what page ID to be used when displaying page historic
+                data.pageId = pageId;
 
-            data.user_name = selectedUser;
-            initSelectedActionData(data);
+                data.user_name = selectedUser;
+                initSelectedActionData(data);
 
-            if ( historicDateFilterStart != "" ) {
-                data.startDate = historicDateFilterStart;
-            }
+                if ( historicDateFilterStart != "" ) {
+                    data.startDate = historicDateFilterStart;
+                }
 
-            if ( historicDateFilterEnd != "" ) {
-                data.endDate = historicDateFilterEnd;
-            }
+                if ( historicDateFilterEnd != "" ) {
+                    data.endDate = historicDateFilterEnd;
+                }
+
+                //$("#tableHistoricPageId"+pageId).DataTable();
         };
 
         //cancel daterange picker
@@ -92,7 +94,7 @@ $(function(){
         //initialize date range picker
         window.initDateRangePickerFilter = function() {
             historicDateFilterStart = "";
-            historicDateFilterEnd = "";
+            historicDateFilterEnd   = "";
 
             var sToday      = translations.tr_meliscore_datepicker_today,
                 sYesterday  = translations.tr_meliscore_datepicker_yesterday,
@@ -123,12 +125,12 @@ $(function(){
 
             var rangeStringParam = {};
 
-                rangeStringParam[sToday] = [moment(), moment()];
-                rangeStringParam[sYesterday] = [moment().subtract(1, 'days'), moment().subtract(1, 'days')];
-                rangeStringParam[sLast7Days] = [moment().subtract(6, 'days'), moment()];
-                rangeStringParam[sLast30Days] = [moment().subtract(29, 'days'), moment()];
-                rangeStringParam[sThisMonth] = [moment().startOf('month'), moment().endOf('month')];
-                rangeStringParam[sLastMonth] = [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')];
+                rangeStringParam[sToday]        = [moment(), moment()];
+                rangeStringParam[sYesterday]    = [moment().subtract(1, 'days'), moment().subtract(1, 'days')];
+                rangeStringParam[sLast7Days]    = [moment().subtract(6, 'days'), moment()];
+                rangeStringParam[sLast30Days]   = [moment().subtract(29, 'days'), moment()];
+                rangeStringParam[sThisMonth]    = [moment().startOf('month'), moment().endOf('month')];
+                rangeStringParam[sLastMonth]    = [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')];
 
                 $body.find(".melisCmsPageHistoricDatePicker").daterangepicker({
                     locale : {
