@@ -38,7 +38,19 @@ $(function(){
                 }
 
                 //$("#tableHistoricPageId"+pageId).DataTable();
+                //$body.find(".melis-refreshPageTable").trigger("click");
         };
+
+        // refreshPageTable
+        // id attribute selector
+        // $("div[id="+activeTabId+"]")
+
+        //$body.on("click", ".nav-tabs li a.history", function() {
+            //melisCms.refreshPageTable();
+            //$($.fn.dataTable.tables( true ) ).css('width', '100%');
+            //$($.fn.dataTable.tables( true ) ).DataTable().columns.adjust().draw();
+            //$body.find(".melis-refreshPageTable").click();
+        //});
 
         //cancel daterange picker
         $body.on('cancel.daterangepicker', '#'+activeTabId+' .tableHistoric', function(ev, picker) {
