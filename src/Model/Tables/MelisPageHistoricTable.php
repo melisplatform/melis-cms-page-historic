@@ -59,7 +59,7 @@ class MelisPageHistoricTable extends MelisGenericTable
 	
 	    if(count($dateFilter)) {
 	        if(!empty($dateFilter['startDate']) && !empty($dateFilter['endDate'])) {
-	            $dateFilterSql = '`' . $dateFilter['key'] . '` BETWEEN \'' . $dateFilter['startDate'] . '\' AND \'' . $dateFilter['endDate'] . '\'';
+	            $dateFilterSql = '`' . $dateFilter['key'] . '` BETWEEN \'' . $dateFilter['startDate'] . ' 00:00:00' . '\' AND \'' . $dateFilter['endDate'] . ' 23:59:59\'';
 	        }
 	    }
 	
@@ -118,9 +118,6 @@ class MelisPageHistoricTable extends MelisGenericTable
         $select->offset($start);
 
         $resultSet = $this->tableGateway->selectWith($select);
-
-        $sql = $this->tableGateway->getSql();
-        $raw = $sql->getSqlstringForSqlObject($select);
 
         return $resultSet;
 	}
