@@ -105,8 +105,8 @@ $(function(){
 
         //initialize date range picker
         window.initDateRangePickerFilter = function() {
-            historicDateFilterStart = "";
-            historicDateFilterEnd   = "";
+            historicDateFilterStart = moment().format(melisDateFormat);
+            historicDateFilterEnd   = historicDateFilterStart;
 
             var sToday      = translations.tr_meliscore_datepicker_today,
                 sYesterday  = translations.tr_meliscore_datepicker_yesterday,
