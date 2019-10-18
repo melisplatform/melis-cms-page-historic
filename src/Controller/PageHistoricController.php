@@ -195,6 +195,15 @@ class PageHistoricController extends AbstractActionController
             );
 
             if ($startDate != NULL && $endDate != NULL) {
+                // detect language to convert dates to proper formats
+                if ($locale == 'fr_FR') {
+                    // From dd/mm/yyyy to mm/dd/yyyy
+                    $startDate = explode('/', $startDate);
+                    $startDate = "$startDate[1]/$startDate[0]/$startDate[2]";
+                    $endDate = explode('/', $endDate);
+                    $endDate = "$endDate[1]/$endDate[0]/$endDate[2]";
+                }
+
                 $option['date_filter'] = [
                     'key' => 'hist_date',
                     'startDate' => date('Y-m-d', strtotime($startDate)),
