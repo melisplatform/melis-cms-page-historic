@@ -85,7 +85,12 @@ class PageHistoricController extends AbstractActionController
      */
     public function renderPageHistoricContentFiltersSearchUserAction()
     {
-        return new ViewModel();
+        $translator = $this->getServiceLocator()->get('translator');
+
+        $view = new ViewModel();
+        $view->label = $translator->translate('tr_melispagehistoric_table_head_User');
+
+        return $view;
     }
 
     /**
@@ -111,7 +116,7 @@ class PageHistoricController extends AbstractActionController
         $options = '<option value="">' . $translator->translate('tr_melispagehistoric_filter_action_select') . '</option>';
         foreach ($actions as $action) {
             if($action['action'] != "Delete")
-                $options .= '<option value="' . $action['action'] . '">' . $action['action'] . '</option>';
+                $options .= '<option value="' . $action['action'] . '">' . $translator->translate('tr_melispagehistoric_action_text_' . $action['action']) . '</option>';
         }
 
         $view = new ViewModel();
