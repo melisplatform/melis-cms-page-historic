@@ -30,7 +30,7 @@ $(function () {
         /** Get current datepicker >> check for start & end dates >> include dates in AJaX request */
         var pckr = $("#" + tblSettings.sTableId + "_wrapper .melisCmsPageHistoricDatePicker");
 
-        if (pckr.length && pckr.data('isInit')) {
+        if (pckr.length && pckr.attr('data-is-init') == 'false') {
             // datepicker is not in initial state (date should be empty if initial state): a workaround for this kind
             // of set-up where dataTable data is from a javascript function
             pckr = pckr.data('daterangepicker');
@@ -61,7 +61,7 @@ $(function () {
     // Refresh table content when date(range) is selected
     $body.on('apply.daterangepicker', ".melisCmsPageHistoricDatePicker", function () {
         var $this = $(this);
-        $this.attr('data-is-init', false);
+        $this.attr('data-is-init', 'false');
 
         var tableId = $this.closest('.filter-bar').siblings('.bottom').find('table').attr('id');
         $("#" + tableId).DataTable().ajax.reload();
