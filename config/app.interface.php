@@ -43,7 +43,7 @@ return array(
                     'use_bundle' => true,
                     // lists of assets that will be loaded in the layout
                     'css' => [
-
+                        '/MelisCmsPageHistoric/build/css/bundle.css',
                     ],
                     'js' => [
                         '/MelisCmsPageHistoric/build/js/bundle.js',

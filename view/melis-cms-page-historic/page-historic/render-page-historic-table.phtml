@@ -1,4 +1,4 @@
-<?php 
+<?php
 	$id = '';
 	if (!empty($this->zoneconfig['conf']['id']))
 		$id = ' id="' . $this->idPage . '_' . $this->zoneconfig['conf']['id'] . '"';
@@ -7,8 +7,8 @@
 
 <div <?= $id; ?> data-melisKey="<?= $data_melisKey; ?>" data-page-id="<?= $this->idPage ?>" class="melis-page-table-cont">
 	<div class="col-sm-12">
-		<?php 
-			/* 
+		<?php
+			/*
 			* This functions prepares the TABLE element in HTML. ID and class associative array attribute will be placed in table like
 			* <table id="tableToolProspect" class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs js-table-sortable">
 			*/
@@ -27,14 +27,14 @@
 			$columnStyle = array();
 			foreach($this->tableColumns as $columnText)
 			{
-				$columns[] = $columnText['text']; 
+				$columns[] = $columnText['text'];
 
 			}
 
 			// this process inserts all the array columns into the table.
 			// the 'center' value indicates where your column texts are positioned.
 			$this->melisGenericTable()->setColumns($columns);
-			
+
 			echo '<br//>'.$this->melisGenericTable()->renderTable();
 		?>
 		<!-- // END TABLE -->
@@ -43,6 +43,56 @@
 			// render table to DataTable plugin
 			$(document).ready(function() {
 				<?= $this->getToolDataTableConfig; ?>
+
+                /** Initializes the User Filter with Select2 */
+                function lookForUserFilter() {
+                    var userFilter = $("#id_mcph_search_user_form_<?= $this->idPage; ?> #id_mcph_user_search");
+                    if (userFilter.length > 0) {
+                        initUserSearchFilter(userFilter);
+                    } else {
+                        setTimeout(function () {
+                            lookForUserFilter()
+                        }, 500);
+                    }
+                }
+
+                lookForUserFilter();
+                function initUserSearchFilter(filter) {
+                    filter.select2({
+                        ajax: {
+                            type: 'POST',
+                            url: "/melis/MelisCmsPageHistoric/PageHistoric/getBOUsers",
+                            dataType: 'json',
+                            delay: 500,
+                            data: function (params) {
+                                return {
+                                    'search': params.term, // search term
+                                    'page': params.page || 1, // pagination,
+                                    'length': 5
+                                };
+                            },
+                            cache: true
+                        },
+                        width: 'element',
+                        allowClear: true,
+                        placeholder: translations.tr_mcph_user_search_placeholder,
+                        language: {
+                            noResults: function () {
+                                return translations.tr_mcph_filter_no_data;
+                            },
+                            searching: function () {
+                                return translations.tr_mcph_filter_searching;
+                            }
+                        }
+                    }).on('select2:unselecting', function() {
+                        $(this).data('unselecting', true);
+                    }).on('select2:opening', function(e) {
+                        if ($(this).data('unselecting')) {
+                            $(this).removeData('unselecting');
+                            e.preventDefault();
+                        }
+                    });
+                }
 			});
 		</script>
 	</div>

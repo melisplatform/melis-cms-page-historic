@@ -1,1 +1,1 @@
-<div class="dataTables_length"></div><label style="font-weight: normal;"><div style="display:inline-block;"><?= $label; ?>:</div><div style="display:inline-block;"><input type="search" class="form-control input-sm melisCmsPageHistoricSearchUserText" aria-controls=""></div></label></div>
+<div class="mcph-user-search-filter"><?php $this->userSearchForm->prepare(); echo $this->form()->openTag($this->userSearchForm); echo $this->melisFieldCollection($this->userSearchForm); echo $this->form()->closeTag();?></div>

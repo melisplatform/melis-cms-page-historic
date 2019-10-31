@@ -97,7 +97,7 @@ class MelisPageHistoricTable extends MelisGenericTable
 	    }
 
 	    if ($user) {
-            $select->where(new \Zend\Db\Sql\Predicate\Expression("CONCAT(usr_firstname, ' ', usr_lastname) = '" . $user . "'"));
+            $select->where(['usr_id' => $user]);
         }
 
         if ($action) {
@@ -195,5 +195,58 @@ class MelisPageHistoricTable extends MelisGenericTable
         $resultSet = $this->tableGateway->selectWith($select);
 
         return $resultSet;
+    }
+
+    /**
+     * Serves Select2-usable data (ex. User search filters)
+     * @param array $where
+     * @return mixed
+     */
+    public function getBOUsers(array $where = [
+        'search' => null,
+        'searchableColumns' => ['*'],
+        'orderBy' => 'usr_firstname',
+        'orderDirection' => null,
+        'start' => null,
+        'limit' => null,
+    ])
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(["fullname" => new Expression("DISTINCT(CONCAT(usr_firstname, ' ', usr_lastname))")]);
+        $select->join('melis_core_user',
+            'melis_core_user.usr_id = melis_hist_page_historic.hist_user_id',
+            [
+                'usr_id',
+                'usr_login',
+                'usr_email',
+                'usr_firstname',
+                'usr_lastname',
+            ],
+            $select::JOIN_LEFT
+        );
+
+        if (!empty($where['searchableColumns'])) {
+            $searchWhere = new Where();
+            $nest = $searchWhere->nest();
+
+            foreach ($where['searchableColumns'] as $column) {
+                $nest->like($column, '%' . $where['search'] . '%')->or;
+            }
+            $select->where($searchWhere);
+        }
+
+        if (!empty($where['limit'])) {
+            $select->limit($where['limit']);
+        }
+
+        if (!empty($where['start'])) {
+            $select->offset($where['start']);
+        }
+
+        if (!empty($where['orderBy']) && !empty($where['orderDirection'])) {
+            $select->order($where['orderBy'] . ' ' . $where['orderDirection']);
+        }
+
+        return $this->tableGateway->selectWith($select);
     }
 }

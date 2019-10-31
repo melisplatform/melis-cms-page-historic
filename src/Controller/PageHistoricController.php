@@ -9,6 +9,7 @@
 
 namespace MelisCmsPageHistoric\Controller;
 
+use Zend\Form\Factory;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
@@ -24,6 +25,7 @@ class PageHistoricController extends AbstractActionController
 { 
     const PLUGIN_INDEX = 'meliscmspagehistoric';
     const TOOL_KEY = 'tool_meliscmspagehistoric';
+    const USER_FILTER_CONFIG_PATH = 'meliscmspagehistoric/forms/mcph_search_user_form';
     
     /**
      * Renders the view inside the Page Historic tab
@@ -80,14 +82,25 @@ class PageHistoricController extends AbstractActionController
     }
 
     /**
-     * Renders the input filter for users
+     * User Filter renderer
      * @return ViewModel
      */
     public function renderPageHistoricContentFiltersSearchUserAction()
     {
-        $translator = $this->getServiceLocator()->get('translator');
-
+        $factory = new Factory();
         $view = new ViewModel();
+        $translator = $this->getServiceLocator()->get('translator');
+        $pageId = $this->params()->fromRoute('idPage', $this->params()->fromQuery('idPage', ''));
+
+        $melisConfig = $this->getServiceLocator()->get('MelisCoreConfig');
+        $formElementMgr = $this->getServiceLocator()->get('FormElementManager');
+        $factory->setFormElementManager($formElementMgr);
+        $formConfig = $melisConfig->getItem(self::USER_FILTER_CONFIG_PATH);
+        /** @var \Zend\Form\Form $form */
+        $form = $factory->createForm($formConfig);
+        $form->setAttribute('id', $form->getAttribute('id') . '_' . $pageId);
+
+        $view->userSearchForm = $form;
         $view->label = $translator->translate('tr_melispagehistoric_table_head_User');
 
         return $view;
@@ -396,5 +409,62 @@ class PageHistoricController extends AbstractActionController
         return new JsonModel(array(
             'users' => $users,
         ));
+    }
+
+    /**
+     * Mainly serves users for the tool's  user search table filter
+     * @return JsonModel
+     */
+    public function getBOUsersAction()
+    {
+        $success = 0;
+        $errors = [];
+        $request = $this->getRequest();
+        $results = [];
+        $morePages = false;
+        $pagination = ["more" => $morePages];
+        $searchableColumns = ['usr_firstname', 'usr_lastname'];
+
+        if ($request->isPost()) {
+            $post = $request->getPost()->toArray();
+            $searchValue = empty($post['search']) ? '' : $post['search'];
+            $limit = empty($post['length']) ? 5 : (int)$post['length'];
+            $orderDirection = 'ASC';
+
+            /**
+             * Filter Suggestion Pagination
+             * - if no 'page' or page1 : do not offset
+             * - otherwise, get offset.
+             */
+            $start = (empty($post['page']) || $post['page'] == 1) ? null : ((int)$post['page'] - 1) * $limit;
+
+            /** @var \MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable $melisPageHistoricTable */
+            $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
+            $where = [
+                'search' => $searchValue,
+                'searchableColumns' => $searchableColumns,
+                'orderBy' => 'usr_firstname',
+                'orderDirection' => $orderDirection,
+                'start' => $start,
+                'limit' => $limit,
+            ];
+            $users = $melisPageHistoricTable->getBOUsers($where)->toArray();
+            foreach ($users as $user) {
+                array_push($results, [
+                    'id' => $user['usr_id'], // Option's value
+                    'text' => $user['fullname'], // Option's label
+                ]);
+            }
+            $success = true;
+        }
+
+        $response = [
+            'results' => $results,
+            'pagination' => $pagination,
+            'success' => $success,
+            'errors' => $errors,
+        ];
+
+        return new JsonModel($response);
     }
 }

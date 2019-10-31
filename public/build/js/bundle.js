@@ -14,7 +14,6 @@ $(function () {
             var thUserId = $(".tableHistoric thead tr").find("th:nth-child(1)");
 
             thUserId.removeClass("sorting_asc");
-            initSearchUserAutoCompleteInput();
             initDateRangePickerFilter();
         });
 
@@ -24,7 +23,9 @@ $(function () {
         // pass what page ID to be used when displaying page historic
         data.pageId = pageId;
 
-        data.user_name = selectedUser;
+        var userFilter = $("#id_mcph_search_user_form_" + pageId + " #id_mcph_user_search");
+        data.user_name = userFilter.length > 0 ? userFilter.val() : "";
+
         initSelectedActionData(data);
 
         /** Get current datepicker >> check for start & end dates >> include dates in AJaX request */
@@ -67,18 +68,11 @@ $(function () {
         $("#" + tableId).DataTable().ajax.reload();
     });
 
-    //initialize autocomplete input for BO users
-    window.initSearchUserAutoCompleteInput = function () {
-        $body.find('.melisCmsPageHistoricSearchUserText').autocomplete({
-            source: historicBackOfficeUsers,
-            select: function (event, ui) {
-                //on select get the value
-                selectedUser = ui.item.value;
-                tableId = $(this).closest('.filter-bar').siblings('.bottom').find('table').attr('id');
-                $("#" + tableId).DataTable().ajax.reload();
-            }
-        });
-    }
+    /** User filter event handler */
+    $body.on("change", ".mcph-user-search", function () {
+        tableId = $(this).closest('.filter-bar').siblings('.bottom').find('table').attr('id');
+        $("#" + tableId).DataTable().ajax.reload();
+    });
 
     //get all BO users present in the pagehistoric database
     window.getBackofficeUsers = function () {
