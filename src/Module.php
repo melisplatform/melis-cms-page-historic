@@ -9,10 +9,10 @@
 
 namespace MelisCmsPageHistoric;
 
-use Zend\Mvc\ModuleRouteListener;
-use Zend\Mvc\MvcEvent;
-use Zend\Stdlib\ArrayUtils;
-use Zend\Session\Container;
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Stdlib\ArrayUtils;
+use Laminas\Session\Container;
 
 use MelisCmsPageHistoric\Listener\MelisPageHistoricDeletePageListener;
 use MelisCmsPageHistoric\Listener\MelisPageHistoricPageEventListener;
@@ -47,9 +47,9 @@ class Module
                 			MvcEvent::EVENT_DISPATCH, function($e) { 
                 				$e->getTarget()->layout('layout/layoutMelisPageHistoric');
             			});
-                    
-                    $eventManager->attach(new MelisPageHistoricDeletePageListener());
-                    $eventManager->attach(new MelisPageHistoricPageEventListener());
+
+                    (new MelisPageHistoricDeletePageListener())->attach($eventManager);
+                    (new MelisPageHistoricPageEventListener())->attach($eventManager);
                 }
             }
         }
@@ -78,7 +78,7 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
-            'Zend\Loader\StandardAutoloader' => array(
+            'Laminas\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),

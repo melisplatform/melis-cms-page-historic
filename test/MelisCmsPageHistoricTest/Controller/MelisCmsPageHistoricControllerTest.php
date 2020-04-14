@@ -10,7 +10,7 @@
 namespace MelisCmsPageHistoricTest\Controller;
 
 use MelisCore\ServiceManagerGrabber;
-use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use Laminas\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 class MelisCmsPageHistoricControllerTest extends AbstractHttpControllerTestCase
 {
     protected $traceError = false;

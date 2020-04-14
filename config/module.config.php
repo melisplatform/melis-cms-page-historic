@@ -1,83 +1,78 @@
 <?php
 
 /**
- * Melis Technology (http://www.melistechnology.com)
+ * Melis Technology (http://www.melistechnology.com]
  *
- * @copyright Copyright (c) 2015 Melis Technology (http://www.melistechnology.com)
+ * @copyright Copyright (c] 2015 Melis Technology (http://www.melistechnology.com]
  *
  */
 
-return array(
-    'router' => array(
-        'routes' => array(
-        	'melis-backoffice' => array(
-                'child_routes' => array(
-                    'application-MelisCmsPageHistoric' => array(
+return [
+    'router' => [
+        'routes' => [
+        	'melis-backoffice' => [
+                'child_routes' => [
+                    'application-MelisCmsPageHistoric' => [
                         'type'    => 'Literal',
-                        'options' => array(
+                        'options' => [
                             'route'    => 'MelisCmsPageHistoric',
-                            'defaults' => array(
+                            'defaults' => [
                                 '__NAMESPACE__' => 'MelisCmsPageHistoric\Controller',
                                 'controller'    => 'PageHistoric',
                                 'action'        => 'renderPageHistoric',
-                            ),
-                        ),
+                            ],
+                        ],
                         'may_terminate' => true,
-                        'child_routes' => array(
-                            'default' => array(
+                        'child_routes' => [
+                            'default' => [
                                 'type'    => 'Segment',
-                                'options' => array(
+                                'options' => [
                                     'route'    => '/[:controller[/:action]]',
-                                    'constraints' => array(
+                                    'constraints' => [
                                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    ),
-                                    'defaults' => array(
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ), 
-                ),
-            ),            
-        ),
-    ),
-    'translator' => array(
+                                    ],
+                                    'defaults' => [
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ], 
+                ],
+            ],            
+        ],
+    ],
+    'translator' => [
     	'locale' => 'en_EN',
-	),
-    'service_manager' => array(
-    	'invokables' => array(
-    	),
-        'aliases' => array(
-            'MelisPagehistoricTable' => 'MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable',
-        ),
-        'factories' => array(
-            'MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable' => 'MelisCmsPageHistoric\Model\Tables\Factory\MelisPageHistoricTableFactory',
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'MelisCmsPageHistoric\Controller\PageHistoric' => 'MelisCmsPageHistoric\Controller\PageHistoricController',
-    	),
-    ),
-    'controller_plugins' => array(
-        'invokables' => array(
-            'MelisCmsPageHistoricRecentUserActivityPlugin' => 'MelisCmsPageHistoric\Controller\DashboardPlugins\MelisCmsPageHistoricRecentUserActivityPlugin',
-        )
-    ),
-    'view_manager' => array(
+	],
+    'service_manager' => [
+        'aliases' => [
+            'MelisPageHistoricTable' => \MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable::class,
+        ],
+    ],
+    'controllers' => [
+        'invokables' => [
+            'MelisCmsPageHistoric\Controller\PageHistoric' => \MelisCmsPageHistoric\Controller\PageHistoricController::class,
+    	],
+    ],
+    'controller_plugins' => [
+        'invokables' => [
+            'MelisCmsPageHistoricRecentUserActivityPlugin' => \MelisCmsPageHistoric\Controller\DashboardPlugins\MelisCmsPageHistoricRecentUserActivityPlugin::class,
+        ]
+    ],
+    'view_manager' => [
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
-        'template_map' => array(
+        'template_map' => [
             // Dashboard plugin templates
             'melis-cms-page-historic/dashboard-plugin/recent-user-activity'  => __DIR__ . '/../view/melis-cms-page-historic/dashboard-plugins/recent-user-activity.phtml',
-        ),
-        'template_path_stack' => array(
+        ],
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-        'strategies' => array(
+        ],
+        'strategies' => [
             'ViewJsonStrategy',
-        ),
-    ),
-);
+        ],
+    ],
+];

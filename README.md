@@ -45,7 +45,7 @@ public function attach(EventManagerInterface $events)
 		'meliscms_page_delete_end', 
 		function($e) {
 
-			$sm = $e->getTarget()->getServiceLocator();
+			$sm = $e->getTarget()->getServiceManager();
         	$params = $e->getParams();
 
         	// Custom Code
