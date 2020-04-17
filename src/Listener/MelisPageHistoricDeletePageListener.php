@@ -12,14 +12,14 @@ namespace MelisCmsPageHistoric\Listener;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\ListenerAggregateInterface;
 
-use MelisCore\Listener\MelisCoreGeneralListener;
+use MelisCore\Listener\MelisGeneralListener;
 
 /**
  * This listener activates when a page is deleted so that an entry
  * is added in the page's historic
  *
  */
-class MelisPageHistoricDeletePageListener extends MelisCoreGeneralListener implements ListenerAggregateInterface
+class MelisPageHistoricDeletePageListener extends MelisGeneralListener implements ListenerAggregateInterface
 {
     
     public function attach(EventManagerInterface $events, $priority = 1)

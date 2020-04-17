@@ -12,13 +12,13 @@ namespace MelisCmsPageHistoric\Listener;
 use Laminas\EventManager\EventInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\ListenerAggregateInterface;
-use MelisCore\Listener\MelisCoreGeneralListener;
+use MelisCore\Listener\MelisGeneralListener;
 
 /**
  * This listener activates when a page is saved, published, unpublished
  * in order to add an entry in the page's historic
  */
-class MelisPageHistoricPageEventListener extends MelisCoreGeneralListener implements ListenerAggregateInterface
+class MelisPageHistoricPageEventListener extends MelisGeneralListener implements ListenerAggregateInterface
 {
     /**
      * @param EventManagerInterface $events
