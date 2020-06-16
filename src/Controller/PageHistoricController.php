@@ -15,13 +15,13 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 use Laminas\View\View;
-use MelisCore\Controller\AbstractActionController;
+use MelisCore\Controller\MelisAbstractActionController;
 
 /**
  * Page Historic Controller
  * Adds the historic tabulation on the page's edition
  */
-class PageHistoricController extends AbstractActionController
+class PageHistoricController extends MelisAbstractActionController
 { 
     const PLUGIN_INDEX = 'meliscmspagehistoric';
     const TOOL_KEY = 'tool_meliscmspagehistoric';
