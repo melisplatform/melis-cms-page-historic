@@ -9,56 +9,61 @@
 
 namespace MelisCmsPageHistoric\Listener;
 
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Session\Container;
-
-use MelisCore\Listener\MelisCoreGeneralListener;
+use Laminas\EventManager\EventInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use MelisCore\Listener\MelisGeneralListener;
 
 /**
  * This listener activates when a page is saved, published, unpublished
  * in order to add an entry in the page's historic
  */
-class MelisPageHistoricPageEventListener extends MelisCoreGeneralListener implements ListenerAggregateInterface
+class MelisPageHistoricPageEventListener extends MelisGeneralListener implements ListenerAggregateInterface
 {
-    
-    public function attach(EventManagerInterface $events)
+    /**
+     * @param EventManagerInterface $events
+     * @param int $priority
+     */
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $sharedEvents = $events->getSharedManager();
-        
-        $callBackHandler = $sharedEvents->attach(
-            'MelisCms', 
-            array(
-        		'meliscms_page_save_end',
-        		'meliscms_page_publish_end',
-        		'meliscms_page_unpublish_end',
-        	), 
-            function($e) {
 
-            	$sm = $e->getTarget()->getServiceLocator();
-                $melisCoreDispatchService = $sm->get('MelisCoreDispatch');
+        $priority = 50;
+        $identifier = 'MelisCms';
+        $eventsName = [
+            'meliscms_page_save_end',
+            'meliscms_page_publish_end',
+            'meliscms_page_unpublish_end',
+        ];
 
-                $params = $e->getParams();
-                $eventName = $e->getName();
-                
-                if ($eventName == 'meliscms_page_save_end')
-                	$actionUsed = 'Save';
+        foreach ($eventsName As $event)
+            $this->listeners[] = $sharedEvents->attach($identifier, $event, [$this, 'savePageHistoric'], $priority);
+    }
 
-            	if ($eventName == 'meliscms_page_publish_end')
-            		$actionUsed = 'Publish';
+    /**
+     * Save page historic
+     * @param EventInterface $event]
+     */
+    public function savePageHistoric(EventInterface $event)
+    {
+        $sm = $event->getTarget()->getServiceManager();
+            $melisCoreDispatchService = $sm->get('MelisCoreDispatch');
 
-        		if ($eventName == 'meliscms_page_unpublish_end')
-        			$actionUsed = 'Unpublish';
-                    
-                // dispatch an event
-				$evtTrigger = $e->getTarget();
-				$results = $evtTrigger->forward()->dispatch('MelisCmsPageHistoric\Controller\PageHistoric',
-								array_merge(array('action' => 'savePageHistoric', 'pageActionUsed' => $actionUsed), $params))->getVariables();
-                    
-            },
-        50);
-        
-        $this->listeners[] = $callBackHandler;
+            $params = $event->getParams();
+            $eventName = $event->getName();
+
+            if ($eventName == 'meliscms_page_save_end')
+                $actionUsed = 'Save';
+
+            if ($eventName == 'meliscms_page_publish_end')
+                $actionUsed = 'Publish';
+
+            if ($eventName == 'meliscms_page_unpublish_end')
+                $actionUsed = 'Unpublish';
+
+            // dispatch an event
+            $evtTrigger = $event->getTarget();
+            $results = $evtTrigger->forward()->dispatch('MelisCmsPageHistoric\Controller\PageHistoric',
+                            array_merge(array('action' => 'savePageHistoric', 'pageActionUsed' => $actionUsed), $params))->getVariables();
     }
 }

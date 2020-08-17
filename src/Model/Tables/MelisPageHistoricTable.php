@@ -9,26 +9,34 @@
 
 namespace MelisCmsPageHistoric\Model\Tables;
 
-use Zend\Db\Sql\Expression;
-use Zend\Db\TableGateway\TableGateway;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\TableGateway\TableGateway;
 use MelisEngine\Model\Tables\MelisGenericTable;
 
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Where;
-use Zend\Db\Sql\Predicate\PredicateSet;
-use Zend\Db\Sql\Predicate\Like;
-use Zend\Db\Sql\Predicate\Operator;
-use Zend\Db\Sql\Predicate\Predicate;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Where;
+use Laminas\Db\Sql\Predicate\PredicateSet;
+use Laminas\Db\Sql\Predicate\Like;
+use Laminas\Db\Sql\Predicate\Operator;
+use Laminas\Db\Sql\Predicate\Predicate;
 
 class MelisPageHistoricTable extends MelisGenericTable
 {
-    protected $tableGateway;
-    protected $idField;
-    
-	public function __construct(TableGateway $tableGateway)
+    /**
+     * Table name
+     */
+    const TABLE = 'melis_hist_page_historic';
+    /**
+     * Primary key
+     */
+    const PRIMARY_KEY = 'hist_page_id';
+
+    /**
+     * MelisPageHistoricTable constructor.
+     */
+	public function __construct()
 	{
-		parent::__construct($tableGateway);
-		$this->idField = 'hist_page_id';
+		$this->idField = self::PRIMARY_KEY;
 	}
 
 	/**
@@ -76,7 +84,7 @@ class MelisPageHistoricTable extends MelisGenericTable
 	
 	        if(!empty($dateFilterSql))
 	        {
-	            $filters = array(new PredicateSet($likes,PredicateSet::COMBINED_BY_OR), new \Zend\Db\Sql\Predicate\Expression($dateFilterSql));
+	            $filters = array(new PredicateSet($likes,PredicateSet::COMBINED_BY_OR), new \Laminas\Db\Sql\Predicate\Expression($dateFilterSql));
 	        }
 	        else
 	        {
@@ -156,7 +164,7 @@ class MelisPageHistoricTable extends MelisGenericTable
     public function getPagesHistoricForDashboard($max = 5)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array(new \Zend\Db\Sql\Expression('DISTINCT(hist_page_id) as pageId'), 'hist_id'));
+        $select->columns(array(new \Laminas\Db\Sql\Expression('DISTINCT(hist_page_id) as pageId'), 'hist_id'));
         $select->order('hist_id DESC');
         $select->limit($max);
         $resultSet = $this->tableGateway->selectWith($select);

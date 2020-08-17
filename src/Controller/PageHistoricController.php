@@ -9,19 +9,19 @@
 
 namespace MelisCmsPageHistoric\Controller;
 
-use Zend\Form\Factory;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-use Zend\View\Model\JsonModel;
-use Zend\Session\Container;
-use Zend\Json\Json;
-use Zend\View\View;
+use Laminas\Form\Factory;
+use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
+use Laminas\Session\Container;
+use Laminas\Json\Json;
+use Laminas\View\View;
+use MelisCore\Controller\MelisAbstractActionController;
 
 /**
  * Page Historic Controller
  * Adds the historic tabulation on the page's edition
  */
-class PageHistoricController extends AbstractActionController
+class PageHistoricController extends MelisAbstractActionController
 { 
     const PLUGIN_INDEX = 'meliscmspagehistoric';
     const TOOL_KEY = 'tool_meliscmspagehistoric';
@@ -29,7 +29,7 @@ class PageHistoricController extends AbstractActionController
     
     /**
      * Renders the view inside the Page Historic tab
-     * @return \Zend\View\Model\ViewModel
+     * @return \Laminas\View\Model\ViewModel
      */
     public function renderPageHistoricAction()
     {
@@ -46,29 +46,29 @@ class PageHistoricController extends AbstractActionController
     
     /**
      * Renders the Page Historic table view
-     * @return \Zend\View\Model\ViewModel
+     * @return \Laminas\View\Model\ViewModel
      */
     public function renderPageHistoricTableAction()
     {
 
-        $translator = $this->getServiceLocator()->get('translator');
+        $translator = $this->getServiceManager()->get('translator');
         $melisKey = $this->params()->fromRoute('melisKey', '');
-        $melisTool = $this->getServiceLocator()->get('MelisCoreTool');
+        $melisTool = $this->getServiceManager()->get('MelisCoreTool');
         $melisTool->setMelisToolKey(self::PLUGIN_INDEX, self::TOOL_KEY);
         $columns = $melisTool->getColumns();
-        
+
         $idPage = $this->params()->fromRoute('idPage', $this->params()->fromQuery('idPage', ''));
-        
+
         $container = new Container('meliscore');
         $locale = $container['melis-lang-locale'];
-        
+
         $view = new ViewModel();
         $view->melisKey = $melisKey;
         $view->tableColumns = $columns;
         $view->getToolDataTableConfig = $melisTool->getDataTableConfiguration('#tableHistoricPageId'.$idPage, true);
         $view->idPage = $idPage;
         $view->tableId = 'tableHistoricPageId'.$idPage;
-        
+
         return $view;
     }
 
@@ -89,14 +89,14 @@ class PageHistoricController extends AbstractActionController
     {
         $factory = new Factory();
         $view = new ViewModel();
-        $translator = $this->getServiceLocator()->get('translator');
+        $translator = $this->getServiceManager()->get('translator');
         $pageId = $this->params()->fromRoute('idPage', $this->params()->fromQuery('idPage', ''));
 
-        $melisConfig = $this->getServiceLocator()->get('MelisCoreConfig');
-        $formElementMgr = $this->getServiceLocator()->get('FormElementManager');
+        $melisConfig = $this->getServiceManager()->get('MelisCoreConfig');
+        $formElementMgr = $this->getServiceManager()->get('FormElementManager');
         $factory->setFormElementManager($formElementMgr);
         $formConfig = $melisConfig->getItem(self::USER_FILTER_CONFIG_PATH);
-        /** @var \Zend\Form\Form $form */
+        /** @var \Laminas\Form\Form $form */
         $form = $factory->createForm($formConfig);
         $form->setAttribute('id', $form->getAttribute('id') . '_' . $pageId);
 
@@ -121,10 +121,10 @@ class PageHistoricController extends AbstractActionController
      */
     public function renderPageHistoricContentFiltersActionsAction()
     {
-        $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPagehistoricTable');
+        $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
         //get distinct actions on database
         $actions = $melisPageHistoricTable->getPageHistoricListOfActions()->toArray();
-        $translator = $this->getServiceLocator()->get('translator');
+        $translator = $this->getServiceManager()->get('translator');
 
         $options = '<option value="">' . $translator->translate('tr_melispagehistoric_filter_action_select') . '</option>';
         foreach ($actions as $action) {
@@ -140,7 +140,7 @@ class PageHistoricController extends AbstractActionController
 
     /**
      * Renders to the refresh button in the datatable
-     * @return \Zend\View\Model\ViewModel
+     * @return \Laminas\View\Model\ViewModel
      */
     public function renderPageHistoricTableRefreshAction()
     {
@@ -149,18 +149,18 @@ class PageHistoricController extends AbstractActionController
     
     /**
      * Returns a JSON format of Page Historic Data from DB
-     * @return \Zend\View\Model\JsonModel
+     * @return \Laminas\View\Model\JsonModel
      */
     public function getPageHistoricDataAction()
     {
-        $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPagehistoricTable');
-        $melisUserTable = $this->serviceLocator->get('MelisCoreTableUser');
+        $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
+        $melisUserTable = $this->getServiceManager()->get('MelisCoreTableUser');
         
-        $translator = $this->getServiceLocator()->get('translator');
-        $melisTool = $this->getServiceLocator()->get('MelisCoreTool');
+        $translator = $this->getServiceManager()->get('translator');
+        $melisTool = $this->getServiceManager()->get('MelisCoreTool');
         $melisTool->setMelisToolKey(self::PLUGIN_INDEX, self::TOOL_KEY);
 
-        $melisTranslation = $this->getServiceLocator()->get('MelisCoreTranslation');
+        $melisTranslation = $this->getServiceManager()->get('MelisCoreTranslation');
         $container = new Container('meliscore');
         $locale = $container['melis-lang-locale'];
         
@@ -275,7 +275,7 @@ class PageHistoricController extends AbstractActionController
     public  function getLatestPageHistoric()
     {
         $responseData = $this->params()->fromRoute('datas', $this->params()->fromQuery('datas', ''));
-        $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
+        $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
 
         $histDatas = array(
             'hist_page_id' => $idPage,
@@ -294,7 +294,7 @@ class PageHistoricController extends AbstractActionController
     public function savePageHistoricAction()
     {
         $responseData = $this->params()->fromRoute('datas', $this->params()->fromQuery('datas', ''));
-        
+
     	$idPage = isset($responseData['idPage']) ? $responseData['idPage'] : (!empty($responseData[0]['idPage'])?($responseData[0]['idPage']):0);
         $isNew =  isset($responseData['isNew']) ? $responseData['isNew'] : (!empty($responseData[0]['isNew'])?($responseData[0]['isNew']):0);
         
@@ -304,8 +304,8 @@ class PageHistoricController extends AbstractActionController
         );
         $this->getEventManager()->trigger('meliscmspagehistoric_historic_save_start', $this, $response);
         
-        $melisCoreAuth = $this->getServiceLocator()->get('MelisCoreAuth');
-    	$melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');	
+        $melisCoreAuth = $this->getServiceManager()->get('MelisCoreAuth');
+    	$melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
 
     	$pageAction = $this->params()->fromRoute('pageActionUsed', $this->params()->fromQuery('pageActionUsed',''));
     	$histDatas  = array();
@@ -375,10 +375,10 @@ class PageHistoricController extends AbstractActionController
         $response = array('idPage' => $idPage);
         $this->getEventManager()->trigger('meliscmspagehistoric_historic_delete_start', $this, $response);
         
-    	$melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
+    	$melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
     	
 
-    	$melisCoreAuth = $this->getServiceLocator()->get('MelisCoreAuth');
+    	$melisCoreAuth = $this->getServiceManager()->get('MelisCoreAuth');
 
     	$userId = (int) null;
         $userAuthDatas =  $melisCoreAuth->getStorage()->read();
@@ -403,7 +403,7 @@ class PageHistoricController extends AbstractActionController
      */
     public function getBackOfficeUsersAction()
     {
-        $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
+        $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
         $users = $melisPageHistoricTable->getUsers()->toArray();
 
         return new JsonModel(array(
@@ -439,7 +439,7 @@ class PageHistoricController extends AbstractActionController
             $start = (empty($post['page']) || $post['page'] == 1) ? null : ((int)$post['page'] - 1) * $limit;
 
             /** @var \MelisCmsPageHistoric\Model\Tables\MelisPageHistoricTable $melisPageHistoricTable */
-            $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPageHistoricTable');
+            $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
             $where = [
                 'search' => $searchValue,
                 'searchableColumns' => $searchableColumns,

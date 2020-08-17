@@ -10,8 +10,8 @@
 namespace MelisCmsPageHistoric\Controller\DashboardPlugins;
 
 use MelisCore\Controller\DashboardPlugins\MelisCoreDashboardTemplatingPlugin;
-use Zend\View\Model\ViewModel;
-use Zend\Session\Container;
+use Laminas\View\Model\ViewModel;
+use Laminas\Session\Container;
 use MelisCms\Service\MelisCmsRightsService;
 
 
@@ -33,7 +33,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
         $pageMelisKey = null;
 
         /** @var \MelisCore\Service\MelisCoreDashboardPluginsRightsService $dashboardPluginsService */
-        $dashboardPluginsService = $this->getServiceLocator()->get('MelisCoreDashboardPluginsService');
+        $dashboardPluginsService = $this->getServiceManager()->get('MelisCoreDashboardPluginsService');
         //get the class name to make it as a key to the plugin
         $path = explode('\\', __CLASS__);
         $className = array_pop($path);
@@ -42,12 +42,12 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
         
         if($this->isCmsActive()) 
         {
-            $melisTranslation = $this->getServiceLocator()->get('MelisCoreTranslation');
-            $melisAppConfig = $this->getServiceLocator()->get('MelisCoreConfig');
-            $melisCoreAuth = $this->getServiceLocator()->get('MelisCoreAuth');
-            $melisCmsRights = $this->getServiceLocator()->get('MelisCmsRights');
+            $melisTranslation = $this->getServiceManager()->get('MelisCoreTranslation');
+            $melisAppConfig = $this->getServiceManager()->get('MelisCoreConfig');
+            $melisCoreAuth = $this->getServiceManager()->get('MelisCoreAuth');
+            $melisCmsRights = $this->getServiceManager()->get('MelisCmsRights');
             
-            $translator = $this->getServiceLocator()->get('translator');
+            $translator = $this->getServiceManager()->get('translator');
             
             $melisKeys = $melisAppConfig->getMelisKeys();
             $fullKeyPage = $melisKeys['meliscms_page'];
@@ -70,9 +70,9 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
             if (!empty($this->pluginConfig['max_lines']))
                 $maxLines = $this->pluginConfig['max_lines'];
                 
-            $melisPageHistoricTable = $this->getServiceLocator()->get('MelisPagehistoricTable');
-            $melisPage = $this->getServiceLocator()->get('MelisPagehistoricTable');
-            $userTable = $this->getServiceLocator()->get('MelisCoreTableUser');
+            $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
+            $melisPage = $this->getServiceManager()->get('MelisPageHistoricTable');
+            $userTable = $this->getServiceManager()->get('MelisCoreTableUser');
             
             $pages = $melisPageHistoricTable->getPagesHistoricForDashboard((int)$maxLines);
 
@@ -83,7 +83,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
                 $pages = $pages->toArray();
                 foreach ($pages as $keyPage => $page)
                 {
-                    $melisPage = $this->getServiceLocator()->get('MelisEnginePage');
+                    $melisPage = $this->getServiceManager()->get('MelisEnginePage');
                     $datasPage = $melisPage->getDatasPage($page['pageId'], 'saved');
                     if (!empty($datasPage))
                         $datasPage = $datasPage->getMelisPageTree();
@@ -156,7 +156,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
         }
         else 
         {
-            $config = $this->getServiceLocator()->get('config');
+            $config = $this->getServiceManager()->get('config');
             unset($config['plugins']['meliscore_dashboard']['interface']['meliscore_dashboard_recent_activity']);
         }
         
@@ -179,7 +179,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
     private function isCmsActive()
     {
         $melisCms  = 'MelisCms';
-        $moduleSvc = $this->getServiceLocator()->get('ModulesService');
+        $moduleSvc = $this->getServiceManager()->get('ModulesService');
         $modules   = $moduleSvc->getActiveModules();
         
         if(in_array($melisCms, $modules)) {
