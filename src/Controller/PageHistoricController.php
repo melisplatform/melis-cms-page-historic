@@ -101,6 +101,7 @@ class PageHistoricController extends MelisAbstractActionController
         $form->setAttribute('id', $form->getAttribute('id') . '_' . $pageId);
 
         $view->userSearchForm = $form;
+        $view->pageId = $pageId;
         $view->label = $translator->translate('tr_melispagehistoric_table_head_User');
 
         return $view;
