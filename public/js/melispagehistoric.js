@@ -1,13 +1,13 @@
 $(function() {
 	// cache body
 	var $body = $("body"),
-		tableId,
-		historicBackOfficeUsers = [],
-		selectedUser = "";
+		tableId;
+	// selectedUser = "";
+	// historicBackOfficeUsers = [],
 
 	window.initHistoric = function(data, tblSettings) {
 		// add events here if you want to do something when initializing page historic
-		getBackofficeUsers();
+		// getBackofficeUsers();
 
 		// remove the sort icon in the table head
 		$(document).on("init.dt", function(e, settings) {
@@ -24,7 +24,7 @@ $(function() {
 		data.pageId = pageId;
 
 		var userFilter = $(
-			"#id_mcph_search_user_form_" + pageId + " #id_mcph_user_search_" + pageId
+			"#id_mcph_search_user_form_" + pageId + " #id_mcph_user_search"
 		);
 		data.user_name = userFilter.length > 0 ? userFilter.val() : "";
 
@@ -105,21 +105,21 @@ $(function() {
 	});
 
 	//get all BO users present in the pagehistoric database
-	window.getBackofficeUsers = function() {
-		historicBackOfficeUsers = [];
-		$.ajax({
-			type: "POST",
-			url: "/melis/MelisCmsPageHistoric/PageHistoric/getBackOfficeUsers",
-		})
-			.done(function(data) {
-				$.each(data.users, function(key, value) {
-					historicBackOfficeUsers.push(value.fullname);
-				});
-			})
-			.fail(function() {
-				alert(translations.tr_meliscore_error_message);
-			});
-	};
+	// window.getBackofficeUsers = function() {
+	// 	historicBackOfficeUsers = [];
+	// 	$.ajax({
+	// 		type: "POST",
+	// 		url: "/melis/MelisCmsPageHistoric/PageHistoric/getBackOfficeUsers",
+	// 	})
+	// 		.done(function(data) {
+	// 			$.each(data.users, function(key, value) {
+	// 				historicBackOfficeUsers.push(value.fullname);
+	// 			});
+	// 		})
+	// 		.fail(function() {
+	// 			alert(translations.tr_meliscore_error_message);
+	// 		});
+	// };
 
 	//initialize date range picker
 	window.initDateRangePickerFilter = function() {
@@ -200,17 +200,13 @@ $(function() {
 
 	//this will get the value of the select and add it into the data so it will be passed in the backend
 	window.initSelectedActionData = function(data) {
-		var actionField = $(
-			"#" + data.pageId + "_id_meliscms_center_page_tabs_historic_table"
-		)
+		var actionField = $("#" + tableId)
 			.closest(".bottom")
 			.siblings(".filter-bar")
 			.find(".melisCmsPageHistoricSelectAction");
 
 		if (actionField.length && actionField.val() != "") {
-			data.action = $(
-				"#" + data.pageId + "_id_meliscms_center_page_tabs_historic_table"
-			)
+			data.action = $("#" + tableId)
 				.closest(".bottom")
 				.siblings(".filter-bar")
 				.find(".melisCmsPageHistoricSelectAction")
