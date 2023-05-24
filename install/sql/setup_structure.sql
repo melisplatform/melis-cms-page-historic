@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS `melis_hist_page_historic` (
   `hist_description` VARCHAR(255) NULL DEFAULT NULL COMMENT '',
   PRIMARY KEY (`hist_id`)  COMMENT '')
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci
 COMMENT = 'Saves the historic actions';
 
 
