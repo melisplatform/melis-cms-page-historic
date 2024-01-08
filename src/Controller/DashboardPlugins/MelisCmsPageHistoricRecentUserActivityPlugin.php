@@ -105,7 +105,7 @@ class MelisCmsPageHistoricRecentUserActivityPlugin extends MelisCoreDashboardTem
                         }
                     }
                     
-                    $date = strftime($melisTranslation->getDateFormatByLocate($locale), strtotime($datasPageHistoric['hist_date']));
+                    $date = date($melisTranslation->getDateFormatByLocate($locale), strtotime($datasPageHistoric['hist_date']));
                     
                     $data_icon = 'fa fa-file-o';
                     if (!empty($datasPage))

@@ -256,7 +256,7 @@ class PageHistoricController extends MelisAbstractActionController
                 
                 $tableData[$ctr]['DT_RowId'] = $tableData[$ctr]['hist_id'];
                 $tableData[$ctr]['hist_action'] = $translator->translate('tr_melispagehistoric_action_text_'.$tableData[$ctr]['hist_action']);
-                $tableData[$ctr]['hist_date'] = strftime($melisTranslation->getDateFormatByLocate($locale), strtotime($tableData[$ctr]['hist_date']));
+                $tableData[$ctr]['hist_date'] = date($melisTranslation->getDateFormatByLocate($locale), strtotime($tableData[$ctr]['hist_date']));
                 $tableData[$ctr]['hist_description'] =$translator->translate($tableData[$ctr]['hist_description']);
             }
         }
