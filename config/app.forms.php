@@ -18,11 +18,11 @@ return [
                         [
                             'spec' => [
                                 'name' => 'mcph_user',
-                                'type' => 'Select',
+                                'type' => 'MelisCoreUsersSelect',
                                 'options' => [
-                                    'empty_option' => 'tr_mcph_user_search_placeholder',
+                                    'empty_option' => 'All User',
                                     'disable_inarray_validator' => true,
-                                    'value_options' => [],
+                                    // 'value_options' => [],
                                 ],
                                 'attributes' => [
                                     'id' => 'id_mcph_user_search',

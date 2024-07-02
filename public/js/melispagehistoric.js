@@ -1,16 +1,16 @@
-$(function() {
+$(function () {
 	// cache body
 	var $body = $("body"),
 		tableId;
 	// selectedUser = "";
 	// historicBackOfficeUsers = [],
 
-	window.initHistoric = function(data, tblSettings) {
+	window.initHistoric = function (data, tblSettings) {
 		// add events here if you want to do something when initializing page historic
 		// getBackofficeUsers();
 
 		// remove the sort icon in the table head
-		$(document).on("init.dt", function(e, settings) {
+		$(document).on("init.dt", function (e, settings) {
 			var thUserId = $(".tableHistoric thead tr").find("th:nth-child(1)");
 
 			thUserId.removeClass("sorting_asc");
@@ -24,7 +24,10 @@ $(function() {
 		data.pageId = pageId;
 
 		var userFilter = $(
-			"#id_mcph_search_user_form_" + pageId + " #id_mcph_user_search"
+			"body #id_mcph_search_user_form_" +
+				pageId +
+				" #id_mcph_user_search_" +
+				pageId
 		);
 		data.user_name = userFilter.length > 0 ? userFilter.val() : "";
 
@@ -52,7 +55,7 @@ $(function() {
 	$body.on(
 		"cancel.daterangepicker",
 		"#" + activeTabId + " .tableHistoric",
-		function(ev, picker) {
+		function (ev, picker) {
 			var $this = $(this);
 
 			$this.find('input[name="datefilter"]').val("");
@@ -60,7 +63,7 @@ $(function() {
 	);
 
 	//refresh table content after selecting an action
-	$body.on("change", ".melisCmsPageHistoricSelectAction", function() {
+	$body.on("change", ".melisCmsPageHistoricSelectAction", function () {
 		var $this = $(this);
 
 		tableId = $this
@@ -77,7 +80,7 @@ $(function() {
 	$body.on(
 		"apply.daterangepicker",
 		".melisCmsPageHistoricDatePicker",
-		function() {
+		function () {
 			var $this = $(this);
 			$this.attr("data-is-init", "false");
 
@@ -93,7 +96,7 @@ $(function() {
 	);
 
 	/** User filter event handler */
-	$body.on("change", ".mcph-user-search", function() {
+	$body.on("change", ".mcph-user-search", function () {
 		tableId = $(this)
 			.closest(".filter-bar")
 			.siblings(".bottom")
@@ -122,7 +125,7 @@ $(function() {
 	// };
 
 	//initialize date range picker
-	window.initDateRangePickerFilter = function() {
+	window.initDateRangePickerFilter = function () {
 		var sToday = translations.tr_meliscore_datepicker_today,
 			sYesterday = translations.tr_meliscore_datepicker_yesterday,
 			sLast7Days = translations.tr_meliscore_datepicker_last_7_days,
@@ -176,12 +179,8 @@ $(function() {
 			moment().endOf("month"),
 		];
 		rangeStringParam[sLastMonth] = [
-			moment()
-				.subtract(1, "month")
-				.startOf("month"),
-			moment()
-				.subtract(1, "month")
-				.endOf("month"),
+			moment().subtract(1, "month").startOf("month"),
+			moment().subtract(1, "month").endOf("month"),
 		];
 
 		$body.find(".melisCmsPageHistoricDatePicker").daterangepicker(
@@ -199,7 +198,7 @@ $(function() {
 	};
 
 	//this will get the value of the select and add it into the data so it will be passed in the backend
-	window.initSelectedActionData = function(data) {
+	window.initSelectedActionData = function (data) {
 		var actionField = $("#" + tableId)
 			.closest(".bottom")
 			.siblings(".filter-bar")
@@ -215,7 +214,7 @@ $(function() {
 	};
 
 	//open historic event
-	$body.on("click", ".melis-openrecenthistoric", function() {
+	$body.on("click", ".melis-openrecenthistoric", function () {
 		var $this = $(this),
 			data = $this.data();
 
