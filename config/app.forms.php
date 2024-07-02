@@ -20,7 +20,7 @@ return [
                                 'name' => 'mcph_user',
                                 'type' => 'MelisCoreUsersSelect',
                                 'options' => [
-                                    'empty_option' => 'All User',
+                                    'empty_option' => 'tr_mcph_filter_all_users',
                                     'disable_inarray_validator' => true,
                                     // 'value_options' => [],
                                 ],
