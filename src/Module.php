@@ -66,6 +66,7 @@ class Module
 	        include __DIR__ . '/../config/diagnostic.config.php',
     	    
 	        include __DIR__ . '/../config/dashboard-plugins/MelisCmsPageHistoricRecentUserActivityPlugin.config.php',
+	        include __DIR__ . '/../config/react-api.php',
     	);
     	
     	foreach ($configFiles as $file) {
