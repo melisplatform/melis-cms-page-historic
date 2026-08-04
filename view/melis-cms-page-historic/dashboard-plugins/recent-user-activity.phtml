@@ -9,7 +9,10 @@
                     {
                         $tagsOpening = 'class="disable-widget-hover"';
                         if ($page['page_accessible'])
-                            $tagsOpening = 'class="melis-openrecenthistoric" data-page-title="' . $page['page_name'] . '"  data-page-icon="' . $page['page_icon'] . '" data-zone-id="' . $page['page_id'] . '_' . $this->pageId . '" data-melis-key="' . $this->pageMelisKey . '" data-page-id="' . $page['page_id'] . '"';
+                            // Sécurité : page_name/page_icon (titre de page, éditable dans l'outil Pages)
+                            // sont injectés dans des attributs data-* → escapeHtmlAttr pour empêcher une
+                            // sortie d'attribut (XSS stocké rendu sur le tableau de bord de chaque admin).
+                            $tagsOpening = 'class="melis-openrecenthistoric" data-page-title="' . $this->escapeHtmlAttr($page['page_name']) . '"  data-page-icon="' . $this->escapeHtmlAttr($page['page_icon']) . '" data-zone-id="' . $this->escapeHtmlAttr($page['page_id']) . '_' . $this->escapeHtmlAttr($this->pageId) . '" data-melis-key="' . $this->escapeHtmlAttr($this->pageMelisKey) . '" data-page-id="' . $this->escapeHtmlAttr($page['page_id']) . '"';
 
                         $histActionIcon = '';
                         if (!empty($page['hist_action_icon']))
@@ -18,9 +21,9 @@
                     <li <?= $tagsOpening; ?>>
                         <span ><?= $page['hist_date']; ?> :
                             <?= $histActionIcon; ?>
-                            <span class="ra-username"><?= $page['page_name']; ?> (<?= $page['page_id']; ?>)</span>,
-                            <?= $page['hist_action']; ?>,
-                            <span class="ra-username"><?= $page['hist_user_name']; ?></span>.
+                            <span class="ra-username"><?= $this->escapeHtml($page['page_name']); ?> (<?= $this->escapeHtml($page['page_id']); ?>)</span>,
+                            <?= $this->escapeHtml($page['hist_action']); ?>,
+                            <span class="ra-username"><?= $this->escapeHtml($page['hist_user_name']); ?></span>.
                         </span>
                         <div class="clearfix"></div>
                     </li>
