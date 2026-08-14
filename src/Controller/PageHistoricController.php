@@ -26,7 +26,13 @@ class PageHistoricController extends MelisAbstractActionController
     const PLUGIN_INDEX = 'meliscmspagehistoric';
     const TOOL_KEY = 'tool_meliscmspagehistoric';
     const USER_FILTER_CONFIG_PATH = 'meliscmspagehistoric/forms/mcph_search_user_form';
-    
+
+    /** @INFO: Tool access check (CWE-862). */
+    private function hasAccess($key)
+    {
+        return $this->getServiceManager()->get('MelisCoreRights')->canAccess($key);
+    }
+
     /**
      * Renders the view inside the Page Historic tab
      * @return \Laminas\View\Model\ViewModel
@@ -154,6 +160,10 @@ class PageHistoricController extends MelisAbstractActionController
      */
     public function getPageHistoricDataAction()
     {
+        if (! $this->hasAccess('meliscms_page')) {
+            return new JsonModel(['draw' => (int) $this->getRequest()->getPost('draw', 0), 'recordsTotal' => 0, 'recordsFiltered' => 0, 'data' => []]);
+        }
+
         $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
         $melisUserTable = $this->getServiceManager()->get('MelisCoreTableUser');
         
@@ -404,6 +414,11 @@ class PageHistoricController extends MelisAbstractActionController
      */
     public function getBackOfficeUsersAction()
     {
+        /** @INFO: Access check (tool right) — CWE-862 */
+        if (! $this->hasAccess('meliscms_page')) {
+            return new JsonModel(['success' => 0, 'textTitle' => '', 'textMessage' => 'tr_meliscore_microservice_api_key_no_access', 'errors' => [], 'datas' => []]);
+        }
+
         $melisPageHistoricTable = $this->getServiceManager()->get('MelisPageHistoricTable');
         $users = $melisPageHistoricTable->getUsers()->toArray();
 
@@ -418,6 +433,11 @@ class PageHistoricController extends MelisAbstractActionController
      */
     public function getBOUsersAction()
     {
+        /** @INFO: Access check (tool right) — CWE-862 */
+        if (! $this->hasAccess('meliscms_page')) {
+            return new JsonModel(['success' => 0, 'textTitle' => '', 'textMessage' => 'tr_meliscore_microservice_api_key_no_access', 'errors' => [], 'datas' => []]);
+        }
+
         $success = 0;
         $errors = [];
         $request = $this->getRequest();
