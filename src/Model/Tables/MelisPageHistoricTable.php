@@ -62,14 +62,9 @@ class MelisPageHistoricTable extends MelisGenericTable
 	    $columns = $options['columns'];
 	
 	    // check if there's an extra variable that should be included in the query
-	    $dateFilter = $options['date_filter'];
-	    $dateFilterSql = '';
-	
-	    if(count($dateFilter)) {
-	        if(!empty($dateFilter['startDate']) && !empty($dateFilter['endDate'])) {
-	            $dateFilterSql = '`' . $dateFilter['key'] . '` BETWEEN \'' . $dateFilter['startDate'] . ' 00:00:00' . '\' AND \'' . $dateFilter['endDate'] . ' 23:59:59\'';
-	        }
-	    }
+	    $dateFilter = $options['date_filter'] ?? [];
+	    // Bound BETWEEN predicate (column whitelisted, dates bound by the driver) instead of raw SQL.
+	    $dateFilterPredicate = \MelisCore\Model\Tables\MelisGenericTable::dateFilterPredicate($dateFilter, ' 00:00:00', ' 23:59:59');
 	
 	    // this is used when searching
 	    if(!empty($where)) {
@@ -82,9 +77,9 @@ class MelisPageHistoricTable extends MelisGenericTable
 	            $likes[] = new Like($colKeys, ''.$whereValue.'');
 	        }
 	
-	        if(!empty($dateFilterSql))
+	        if ($dateFilterPredicate !== null)
 	        {
-	            $filters = array(new PredicateSet($likes,PredicateSet::COMBINED_BY_OR), new \Laminas\Db\Sql\Predicate\Expression($dateFilterSql));
+	            $filters = array(new PredicateSet($likes,PredicateSet::COMBINED_BY_OR), $dateFilterPredicate);
 	        }
 	        else
 	        {
@@ -114,7 +109,7 @@ class MelisPageHistoricTable extends MelisGenericTable
 	
 	    // used when column ordering is clicked
 	    if(!empty($order))
-	        $select->order($order . ' ' . $orderDir);
+	        \MelisCore\Model\Tables\MelisGenericTable::addSafeOrder($select, $order, $orderDir);
 	
 	
         $getCount = $this->tableGateway->selectWith($select);
@@ -182,7 +177,7 @@ class MelisPageHistoricTable extends MelisGenericTable
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(["action" => new Expression('DISTINCT(hist_action)')]);
-        $select->order('hist_action' . ' '  . $order);
+        \MelisCore\Model\Tables\MelisGenericTable::addSafeOrder($select, 'hist_action', $order);
         $resultSet = $this->tableGateway->selectWith($select);
 
         return $resultSet;
@@ -252,7 +247,7 @@ class MelisPageHistoricTable extends MelisGenericTable
         }
 
         if (!empty($where['orderBy']) && !empty($where['orderDirection'])) {
-            $select->order($where['orderBy'] . ' ' . $where['orderDirection']);
+            \MelisCore\Model\Tables\MelisGenericTable::addSafeOrder($select, $where['orderBy'], $where['orderDirection']);
         }
 
         return $this->tableGateway->selectWith($select);
