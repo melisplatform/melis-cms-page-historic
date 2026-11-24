@@ -27,7 +27,7 @@ class PageHistoricController extends MelisAbstractActionController
     const TOOL_KEY = 'tool_meliscmspagehistoric';
     const USER_FILTER_CONFIG_PATH = 'meliscmspagehistoric/forms/mcph_search_user_form';
 
-    /** @INFO: Tool access check (CWE-862). */
+    /** @INFO: Tool access check. */
     private function hasAccess($key)
     {
         return $this->getServiceManager()->get('MelisCoreRights')->canAccess($key);
@@ -414,7 +414,7 @@ class PageHistoricController extends MelisAbstractActionController
      */
     public function getBackOfficeUsersAction()
     {
-        /** @INFO: Access check (tool right) — CWE-862 */
+        /** @INFO: Access check (tool right) */
         if (! $this->hasAccess('meliscms_page')) {
             return new JsonModel(['success' => 0, 'textTitle' => '', 'textMessage' => 'tr_meliscore_microservice_api_key_no_access', 'errors' => [], 'datas' => []]);
         }
@@ -433,7 +433,7 @@ class PageHistoricController extends MelisAbstractActionController
      */
     public function getBOUsersAction()
     {
-        /** @INFO: Access check (tool right) — CWE-862 */
+        /** @INFO: Access check (tool right) */
         if (! $this->hasAccess('meliscms_page')) {
             return new JsonModel(['success' => 0, 'textTitle' => '', 'textMessage' => 'tr_meliscore_microservice_api_key_no_access', 'errors' => [], 'datas' => []]);
         }
