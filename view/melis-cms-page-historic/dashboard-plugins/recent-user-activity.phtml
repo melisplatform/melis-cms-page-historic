@@ -9,9 +9,8 @@
                     {
                         $tagsOpening = 'class="disable-widget-hover"';
                         if ($page['page_accessible'])
-                            // Sécurité : page_name/page_icon (titre de page, éditable dans l'outil Pages)
-                            // sont injectés dans des attributs data-* → escapeHtmlAttr pour empêcher une
-                            // sortie d'attribut (XSS stocké rendu sur le tableau de bord de chaque admin).
+                            // page_name/page_icon (titre de page, éditable dans l'outil Pages) sont écrits
+                            // dans des attributs data-* → escapeHtmlAttr.
                             $tagsOpening = 'class="melis-openrecenthistoric" data-page-title="' . $this->escapeHtmlAttr($page['page_name']) . '"  data-page-icon="' . $this->escapeHtmlAttr($page['page_icon']) . '" data-zone-id="' . $this->escapeHtmlAttr($page['page_id']) . '_' . $this->escapeHtmlAttr($this->pageId) . '" data-melis-key="' . $this->escapeHtmlAttr($this->pageMelisKey) . '" data-page-id="' . $this->escapeHtmlAttr($page['page_id']) . '"';
 
                         $histActionIcon = '';
